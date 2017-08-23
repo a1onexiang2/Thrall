@@ -33,6 +33,7 @@ class ThrallConfig internal constructor() : Serializable {
     internal var logoSize = intArrayOf(UNSETTLED_INT, UNSETTLED_INT)
     internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
+    internal var logoOnClickListener = View.OnClickListener {}
 
     internal var title = UNSETTLED_STRING
     internal var titleGravity = Gravity.CENTER
@@ -41,12 +42,12 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal var navigationIcon = UNSETTLED_INT
     internal var navigationVisible = false
-    internal var navigationOnClickListener: View.OnClickListener = View.OnClickListener {}
+    internal var navigationOnClickListener = View.OnClickListener {}
 
     internal var overflowIcon = UNSETTLED_INT
 
     internal var menuResIds = arrayListOf<Int>()
-    internal var menuOnItemClickListener: Toolbar.OnMenuItemClickListener = Toolbar.OnMenuItemClickListener { false }
+    internal var menuOnItemClickListener = Toolbar.OnMenuItemClickListener { false }
     internal var menuMinWidth = UNSETTLED_INT
     internal var menuMaxWidth = UNSETTLED_INT
     internal var menuTextAppearance = UNSETTLED_INT
@@ -145,6 +146,13 @@ class ThrallConfig internal constructor() : Serializable {
     fun setLogoVisible(visible: Boolean): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             logoVisible = visible
+        }
+        return this
+    }
+
+    fun setLogoOnClickListener(listener: View.OnClickListener): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            logoOnClickListener = listener
         }
         return this
     }
@@ -451,9 +459,10 @@ class ThrallConfig internal constructor() : Serializable {
         result.popupTheme = this.popupTheme
         result.titleAppearance = this.titleAppearance
         result.logoIcon = this.logoIcon
-        result.logoVisible = this.logoVisible
         result.logoSize = this.logoSize
         result.logoPadding = this.logoPadding
+        result.logoVisible = this.logoVisible
+        result.logoOnClickListener = this.logoOnClickListener
         result.title = this.title
         result.titleGravity = this.titleGravity
         result.titleVisible = this.titleVisible
