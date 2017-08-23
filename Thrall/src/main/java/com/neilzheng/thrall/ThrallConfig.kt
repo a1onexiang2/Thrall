@@ -16,6 +16,8 @@ import java.io.Serializable
 class ThrallConfig internal constructor() : Serializable {
 
     internal var height = UNSETTLED_INT
+    internal var paddingLeft = UNSETTLED_INT
+    internal var paddingRight = UNSETTLED_INT
     internal var backgroundColor = UNSETTLED_INT
     internal var asSupportActionBar = false
     internal var isInViewPager = false
@@ -23,13 +25,12 @@ class ThrallConfig internal constructor() : Serializable {
     internal var elevation = UNSETTLED_FLOAT
     internal var shadowVisible = true
     internal var scrollBehaviorEnabled = false
-    internal var toolbarTheme = Theme.DARK
-    internal var popupTheme = Theme.LIGHT
+    internal var toolbarTheme = Theme.DARK()
+    internal var popupTheme = Theme.LIGHT()
     internal var titleAppearance = R.style.TextAppearance_AppCompat_Title
 
     internal var logoIcon = UNSETTLED_INT
-    internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
-    internal var logoMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
+    internal var logoSize = intArrayOf(UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
 
     internal var title = UNSETTLED_STRING
@@ -45,8 +46,6 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal var menuResIds = arrayListOf<Int>()
     internal var menuOnItemClickListener: Toolbar.OnMenuItemClickListener = Toolbar.OnMenuItemClickListener { false }
-    internal var menuPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
-    internal var menuMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var menuMinWidth = UNSETTLED_INT
     internal var menuMaxWidth = UNSETTLED_INT
     internal var menuTextAppearance = UNSETTLED_INT
@@ -60,14 +59,28 @@ class ThrallConfig internal constructor() : Serializable {
     private var isSaved = false
 
     object Theme {
-        @JvmStatic val LIGHT = R.style.Thrall_Light
-        @JvmStatic val DARK = R.style.Thrall_Dark
-        @JvmStatic val DAY_NIGHT = R.style.Thrall_DayNight
+        @JvmStatic @StyleRes fun LIGHT(): Int = R.style.Thrall_Light
+        @JvmStatic @StyleRes fun DARK(): Int = R.style.Thrall_Dark
+        @JvmStatic @StyleRes fun DAY_NIGHT(): Int = R.style.Thrall_DayNight
     }
 
     fun setHeight(@Px height: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             this.height = height
+        }
+        return this
+    }
+
+    fun setPaddingLeft(@Px padding: Int): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            this.paddingLeft = padding
+        }
+        return this
+    }
+
+    fun setPaddingRight(@Px padding: Int): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            this.paddingRight = padding
         }
         return this
     }
@@ -135,22 +148,12 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setLogoPadding(padding: IntArray): ThrallConfig {
-        if (padding.size < 4) {
+    fun setLogoSize(size: IntArray): ThrallConfig {
+        if (size.size < 2) {
             //TODO throw ThrallException
         }
         if (!checkSavedDefaultLock()) {
-            logoPadding = padding
-        }
-        return this
-    }
-
-    fun setLogoMargin(@Px margin: IntArray): ThrallConfig {
-        if (margin.size < 4) {
-            //TODO throw ThrallException
-        }
-        if (!checkSavedDefaultLock()) {
-            this.logoMargin = margin
+            logoSize = size
         }
         return this
     }
@@ -256,23 +259,9 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setMenuPadding(@Px padding: IntArray): ThrallConfig {
-        if (padding.size < 4) {
-            //TODO throw ThrallException
-        }
+    fun setMenuTextAppearance(@StyleRes resId: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
-            this.menuPadding = padding
-        }
-        return this
-    }
-
-    fun setMenuMargin(@Px margin: IntArray): ThrallConfig {
-        if (margin.size < 4) {
-            //TODO throw ThrallException
-            throw ThrallException()
-        }
-        if (!checkSavedDefaultLock()) {
-            this.menuMargin = margin
+            this.menuTextAppearance = resId
         }
         return this
     }
@@ -295,13 +284,6 @@ class ThrallConfig internal constructor() : Serializable {
                 throw ThrallException()
             }
             this.menuMaxWidth = maxWidth
-        }
-        return this
-    }
-
-    fun setMenuTextAppearance(@StyleRes resId: Int): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            this.menuTextAppearance = resId
         }
         return this
     }
@@ -361,6 +343,12 @@ class ThrallConfig internal constructor() : Serializable {
             if (isUnsettled(config.height)) {
                 config.setHeight(ThrallUtils.dp2px(48))
             }
+            if (isUnsettled(config.paddingLeft)) {
+                config.setPaddingLeft(0)
+            }
+            if (isUnsettled(config.paddingRight)) {
+                config.setPaddingRight(0)
+            }
             if (isUnsettled(config.backgroundColor)) {
                 config.setBackgroundColor(0x3F51B5)
             }
@@ -381,24 +369,9 @@ class ThrallConfig internal constructor() : Serializable {
             (0..config.titleMargin.size - 1)
                     .filter { isUnsettled(config.titleMargin[it]) }
                     .forEach { config.titleMargin[it] = 0 }
-            (0..config.menuPadding.size - 1)
-                    .filter { isUnsettled(config.menuPadding[it]) }
-                    .forEach { config.menuPadding[it] = ThrallUtils.dp2px(6) }
-            (0..config.logoPadding.size - 1)
-                    .filter { isUnsettled(config.logoPadding[it]) }
-                    .forEach { config.logoPadding[it] = 0 }
-            (0..config.logoMargin.size - 1)
-                    .filter { isUnsettled(config.logoMargin[it]) }
-                    .forEach { config.logoMargin[it] = 0 }
-            (0..config.menuMargin.size - 1)
-                    .filter { isUnsettled(config.menuMargin[it]) }
-                    .forEach { config.menuMargin[it] = 0 }
-            if (isUnsettled(config.menuMinWidth)) {
-                config.setMenuMinWidth(0)
-            }
-            if (isUnsettled(config.menuMaxWidth)) {
-                config.setMenuMaxWidth(0)
-            }
+            (0..config.logoSize.size - 1)
+                    .filter { isUnsettled(config.logoSize[it]) }
+                    .forEach { config.logoSize[it] = 0 }
             if (isUnsettled(config.menuTextAppearance)) {
                 config.setMenuTextAppearance(R.style.TextAppearance_AppCompat_Small)
             }
@@ -408,9 +381,11 @@ class ThrallConfig internal constructor() : Serializable {
             if (isUnsettled(config.menuHeight)) {
                 config.setMenuHeight((config.height * config.menuHeightRatio).toInt())
             }
-            while (config.menuMargin[1] + config.menuMargin[3] > config.menuHeight * 0.5f) {
-                config.menuMargin[1] = (config.menuMargin[1] * 0.8f).toInt()
-                config.menuMargin[3] = (config.menuMargin[3] * 0.8f).toInt()
+            if (isUnsettled(config.menuMaxWidth)) {
+                config.menuMaxWidth
+            }
+            if (isUnsettled(config.menuMinWidth)) {
+                config.menuMinWidth
             }
         }
 
@@ -449,6 +424,8 @@ class ThrallConfig internal constructor() : Serializable {
     internal fun cloneInstance(): ThrallConfig {
         val result = ThrallConfig()
         result.height = this.height
+        result.paddingLeft = this.paddingLeft
+        result.paddingRight = this.paddingRight
         result.backgroundColor = this.backgroundColor
         result.asSupportActionBar = this.asSupportActionBar
         result.isInViewPager = this.isInViewPager
@@ -461,8 +438,7 @@ class ThrallConfig internal constructor() : Serializable {
         result.titleAppearance = this.titleAppearance
         result.logoIcon = this.logoIcon
         result.logoVisible = this.logoVisible
-        result.logoPadding = this.logoPadding
-        result.logoMargin = this.logoMargin
+        result.logoSize = this.logoSize
         result.title = this.title
         result.titleGravity = this.titleGravity
         result.titleVisible = this.titleVisible
@@ -474,8 +450,6 @@ class ThrallConfig internal constructor() : Serializable {
         result.menuResIds = arrayListOf()
         result.menuResIds.addAll(this.menuResIds)
         result.menuOnItemClickListener = this.menuOnItemClickListener
-        result.menuPadding = this.menuPadding
-        result.menuMargin = this.menuMargin
         result.menuMinWidth = this.menuMinWidth
         result.menuMaxWidth = this.menuMaxWidth
         result.menuTextAppearance = this.menuTextAppearance

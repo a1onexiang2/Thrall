@@ -64,10 +64,16 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             logo = context.resources.getDrawable(config.logoIcon)
             val imageList = ThrallUtils.findAllView(this, AppCompatImageView::class.java)
             val logoView = imageList.filter { it.drawable === logo }.first()
-            logoView.setPadding(config.logoPadding[0], config.logoPadding[1], config.logoPadding[2], config.logoPadding[3])
             val params = logoView.layoutParams as MarginLayoutParams
-            params.setMargins(config.logoMargin[0], config.logoMargin[1], config.logoMargin[2], config.logoMargin[3])
+            if (config.logoSize[0] > 0) {
+                params.width = config.logoSize[0]
+            }
+            if (config.logoSize[1] > 0) {
+                params.height = config.logoSize[1]
+            }
+            params.leftMargin = config.paddingLeft
             logoView.layoutParams = params
+            logoView.setPadding(config.paddingLeft, 0, 0, 0)
         }
         if (config.overflowIcon > 0) {
             overflowIcon = context.resources.getDrawable(config.overflowIcon)
@@ -89,6 +95,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
      */
     internal fun updateMenuStyle(childCount: Int) {
         val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
+        menuView.setPadding(0, 0, ThrallUtils.dp2px(6), 0)
         var waiting = true
         val thread = Thread({
             while (waiting) {
@@ -118,13 +125,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             menuItemView.maxWidth = config.menuMaxWidth
         }
         val layoutParams = menuItemView.layoutParams as MarginLayoutParams
-        while (config.menuMargin[0] + config.menuMargin[2] > menuItemView.maxWidth * 0.5f) {
-            config.menuMargin[0] = (config.menuMargin[0] * 0.8f).toInt()
-            config.menuMargin[2] = (config.menuMargin[2] * 0.8f).toInt()
-        }
-        layoutParams.setMargins(config.menuMargin[0], config.menuMargin[1], config.menuMargin[2], config.menuMargin[3])
-        menuItemView.setPadding(config.menuPadding[0], config.menuPadding[1], config.menuPadding[2], config.menuPadding[3])
-        layoutParams.height = config.menuHeight - config.menuMargin[1] - config.menuMargin[3]
+        layoutParams.height = config.menuHeight
         menuItemView.layoutParams = layoutParams
         menuItemView.setTextAppearance(context, config.menuTextAppearance)
         menuItemView.postInvalidate()

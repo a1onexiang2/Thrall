@@ -63,8 +63,6 @@ class MainActivity : AppCompatActivity() {
         Thrall.newConfig()
                 .setTitle("Thrall Sample")
                 .setLogoIcon(R.mipmap.ic_launcher_round)
-                .setLogoPadding(intArrayOf(0, 0, 0, 0))
-                .setLogoMargin(intArrayOf(0, 0, 0, 0))
                 .setLogoVisible(true)
                 .setAsActionBar(true)
                 .bind(this)
