@@ -31,6 +31,7 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal var logoIcon = UNSETTLED_INT
     internal var logoSize = intArrayOf(UNSETTLED_INT, UNSETTLED_INT)
+    internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
 
     internal var title = UNSETTLED_STRING
@@ -154,6 +155,16 @@ class ThrallConfig internal constructor() : Serializable {
         }
         if (!checkSavedDefaultLock()) {
             logoSize = size
+        }
+        return this
+    }
+
+    fun setLogoPadding(padding: IntArray): ThrallConfig {
+        if (padding.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            logoPadding = padding
         }
         return this
     }
@@ -372,6 +383,9 @@ class ThrallConfig internal constructor() : Serializable {
             (0..config.logoSize.size - 1)
                     .filter { isUnsettled(config.logoSize[it]) }
                     .forEach { config.logoSize[it] = 0 }
+            (0..config.logoPadding.size - 1)
+                    .filter { isUnsettled(config.logoPadding[it]) }
+                    .forEach { config.logoPadding[it] = 0 }
             if (isUnsettled(config.menuTextAppearance)) {
                 config.setMenuTextAppearance(R.style.TextAppearance_AppCompat_Small)
             }
@@ -439,6 +453,7 @@ class ThrallConfig internal constructor() : Serializable {
         result.logoIcon = this.logoIcon
         result.logoVisible = this.logoVisible
         result.logoSize = this.logoSize
+        result.logoPadding = this.logoPadding
         result.title = this.title
         result.titleGravity = this.titleGravity
         result.titleVisible = this.titleVisible

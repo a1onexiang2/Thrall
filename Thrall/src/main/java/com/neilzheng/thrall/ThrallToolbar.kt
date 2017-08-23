@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Looper
+import android.support.design.widget.AppBarLayout
 import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.ActionMenuView
 import android.support.v7.widget.AppCompatImageView
@@ -43,6 +44,12 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
 
     internal fun setConfig(config: ThrallConfig) {
         this.config = config
+        val toolbarParams = layoutParams as AppBarLayout.LayoutParams
+        toolbarParams.scrollFlags = if (config.scrollBehaviorEnabled)
+            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL else 0
+        toolbarParams.height = config.height
+        layoutParams = toolbarParams
+        setPadding(config.paddingLeft, 0, config.paddingRight, 0)
         minimumHeight = config.height
         context.setTheme(config.toolbarTheme)
         popupTheme = config.popupTheme
@@ -71,9 +78,9 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             if (config.logoSize[1] > 0) {
                 params.height = config.logoSize[1]
             }
-            params.leftMargin = config.paddingLeft
             logoView.layoutParams = params
-            logoView.setPadding(config.paddingLeft, 0, 0, 0)
+            logoView.setPadding(config.logoPadding[0], config.logoPadding[1],
+                    config.logoPadding[2], config.logoPadding[3])
         }
         if (config.overflowIcon > 0) {
             overflowIcon = context.resources.getDrawable(config.overflowIcon)
@@ -95,7 +102,6 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
      */
     internal fun updateMenuStyle(childCount: Int) {
         val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
-        menuView.setPadding(0, 0, ThrallUtils.dp2px(6), 0)
         var waiting = true
         val thread = Thread({
             while (waiting) {

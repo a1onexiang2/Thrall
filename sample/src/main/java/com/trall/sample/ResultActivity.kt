@@ -81,17 +81,17 @@ class ResultActivity : AppCompatActivity() {
             if (extras.containsKey("toolbarTheme")) {
                 val value = extras.getString("toolbarTheme")
                 when (value.toLowerCase(Locale.getDefault())) {
-                    "light" -> config.setToolbarTheme(ThrallConfig.Theme.LIGHT)
-                    "dark" -> config.setToolbarTheme(ThrallConfig.Theme.DARK)
-                    "daynight" -> config.setToolbarTheme(ThrallConfig.Theme.DAY_NIGHT)
+                    "light" -> config.setToolbarTheme(ThrallConfig.Theme.LIGHT())
+                    "dark" -> config.setToolbarTheme(ThrallConfig.Theme.DARK())
+                    "daynight" -> config.setToolbarTheme(ThrallConfig.Theme.DAY_NIGHT())
                 }
             }
             if (extras.containsKey("popupTheme")) {
                 val value = extras.getString("popupTheme")
                 when (value.toLowerCase(Locale.getDefault())) {
-                    "light" -> config.setPopupTheme(ThrallConfig.Theme.LIGHT)
-                    "dark" -> config.setPopupTheme(ThrallConfig.Theme.DARK)
-                    "daynight" -> config.setPopupTheme(ThrallConfig.Theme.DAY_NIGHT)
+                    "light" -> config.setPopupTheme(ThrallConfig.Theme.LIGHT())
+                    "dark" -> config.setPopupTheme(ThrallConfig.Theme.DARK())
+                    "daynight" -> config.setPopupTheme(ThrallConfig.Theme.DAY_NIGHT())
                 }
             }
             if (extras.containsKey("titleAppearance")) {

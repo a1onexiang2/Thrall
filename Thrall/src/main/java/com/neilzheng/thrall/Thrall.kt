@@ -118,15 +118,11 @@ class Thrall private constructor() {
             val container = View.inflate(activity, R.layout.layout_container, null) as CoordinatorLayout
             val appBarContainer = container.findViewById(R.id.layout_appBar) as AppBarLayout
             toolbar = View.inflate(activity, R.layout.toolbar, null) as ThrallToolbar
-            toolbar.setPadding(config.paddingLeft, 0, config.paddingRight, 0)
             container.fitsSystemWindows = !config.isInViewPager || config.asSupportActionBar
-            toolbar.setConfig(config)
             val toolbarParams = AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT,
                     AppBarLayout.LayoutParams.WRAP_CONTENT)
-            toolbarParams.scrollFlags = if (config.scrollBehaviorEnabled)
-                AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL else 0
-            toolbarParams.height = config.height
             appBarContainer.addView(toolbar, toolbarParams)
+            toolbar.setConfig(config)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ThrallUtils.setElevation(appBarContainer, config.elevation)
             } else {
