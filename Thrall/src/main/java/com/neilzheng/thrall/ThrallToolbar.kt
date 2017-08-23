@@ -81,6 +81,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             logoView.layoutParams = params
             logoView.setPadding(config.logoPadding[0], config.logoPadding[1],
                     config.logoPadding[2], config.logoPadding[3])
+            logoView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
         if (config.overflowIcon > 0) {
             overflowIcon = context.resources.getDrawable(config.overflowIcon)
