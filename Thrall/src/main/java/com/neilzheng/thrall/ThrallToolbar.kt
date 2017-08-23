@@ -124,7 +124,6 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         }
         layoutParams.setMargins(config.menuMargin[0], config.menuMargin[1], config.menuMargin[2], config.menuMargin[3])
         menuItemView.setPadding(config.menuPadding[0], config.menuPadding[1], config.menuPadding[2], config.menuPadding[3])
-        menuItemView.setBackgroundColor(Color.GRAY)
         layoutParams.height = config.menuHeight - config.menuMargin[1] - config.menuMargin[3]
         menuItemView.layoutParams = layoutParams
         menuItemView.setTextAppearance(context, config.menuTextAppearance)
