@@ -1,11 +1,9 @@
 package com.trall.sample
 
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import com.neilzheng.thrall.Thrall
@@ -23,21 +21,6 @@ class ResultFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Thrall.onPrepareOptionsMenu(this, menu)
-        super.onPrepareOptionsMenu(menu)
     }
 
     private fun initRecyclerView() {

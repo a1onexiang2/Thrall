@@ -1,12 +1,10 @@
 package com.trall.sample
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.Toolbar
+import android.util.Log
+import android.view.*
 import com.neilzheng.thrall.Thrall
 
 /**
@@ -24,6 +22,10 @@ class SimpleFragment : Fragment() {
                 .setTitle("SimpleFragment")
                 .setTitleGravity(Gravity.BOTTOM or Gravity.LEFT)
                 .setLogoVisible(true)
+                .addMenuResId(R.menu.main)
+                .setMenuOnItemClickListener(Toolbar.OnMenuItemClickListener {
+                    Log.e("123", "321")
+                    true })
                 .setIsInViewPager(true)
                 .setLogoIcon(R.mipmap.ic_launcher_round)
                 .setShadowVisible(true)

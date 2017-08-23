@@ -44,6 +44,20 @@ class ThrallUtils {
             return null
         }
 
+        internal fun <T : View> findAllView(view: View, clazz: Class<T>): ArrayList<T> {
+            val result = arrayListOf<T>()
+            if (clazz.isInstance(view)) {
+                result.add(view as T)
+            } else {
+                when (view) {
+                    is ViewGroup -> (0..view.childCount - 1).forEach {
+                        result.addAll(findAllView(view.getChildAt(it), clazz))
+                    }
+                }
+            }
+            return result
+        }
+
         internal fun <T : View> hasView(view: View, clazz: Class<T>): Boolean {
             return findView(view, clazz) != null
         }
@@ -86,12 +100,20 @@ class ThrallUtils {
             return activity.findViewById(android.R.id.content) as ViewGroup
         }
 
+        internal fun dp2pxf(dp: Int): Float {
+            return dp * Resources.getSystem().displayMetrics.density
+        }
+
         @Px internal fun dp2px(dp: Int): Int {
-            return (dp * Resources.getSystem().displayMetrics.density).toInt()
+            return dp2pxf(dp).toInt()
+        }
+
+        internal fun sp2pxf(sp: Int): Float {
+            return sp * Resources.getSystem().displayMetrics.scaledDensity + 0.5f
         }
 
         @Px internal fun sp2px(sp: Int): Int {
-            return (sp * Resources.getSystem().displayMetrics.scaledDensity + 0.5f).toInt()
+            return sp2pxf(sp).toInt()
         }
 
     }

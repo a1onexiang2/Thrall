@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="height_statusBar">25dp</dimen>
-    <dimen name="height_toolBar">48dp</dimen>
-    <dimen name="elevation_appBar">2dp</dimen>
-</resources>

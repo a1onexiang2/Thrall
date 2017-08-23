@@ -113,7 +113,7 @@ class Thrall private constructor() {
                 //TODO multi Toolbar Exception
                 throw ThrallException()
             }
-            ThrallConfig.Checker.check(activity, config)
+            ThrallConfig.Checker.check(config)
 
             val container = View.inflate(activity, R.layout.layout_container, null) as CoordinatorLayout
             val appBarContainer = container.findViewById(R.id.layout_appBar) as AppBarLayout
@@ -134,11 +134,21 @@ class Thrall private constructor() {
 
             ThrallUtils.addToRootView(rootView, container)
 
-            if (config.asSupportActionBar && activity is AppCompatActivity) {
-                activity.setSupportActionBar(toolbar)
-                activity.supportActionBar!!.setDisplayHomeAsUpEnabled(config.navigationVisible)
-                activity.supportActionBar!!.setDisplayUseLogoEnabled(config.logoVisible)
-                //TODO Customize the MenuItem
+            if (config.asSupportActionBar) {
+                if (activity is AppCompatActivity) {
+                    activity.setSupportActionBar(toolbar)
+                    activity.supportActionBar!!.setDisplayHomeAsUpEnabled(config.navigationVisible)
+                    activity.supportActionBar!!.setDisplayUseLogoEnabled(config.logoVisible)
+                    //TODO Customize the MenuItem
+                }
+            } else {
+                if (config.menuResIds.isNotEmpty()) {
+                    config.menuResIds.forEach {
+                        toolbar.inflateMenu(it)
+                    }
+                }
+                toolbar.updateMenuStyle(toolbar.menu.size())
+                toolbar.setOnMenuItemClickListener(config.menuOnItemClickListener)
             }
 
             /**

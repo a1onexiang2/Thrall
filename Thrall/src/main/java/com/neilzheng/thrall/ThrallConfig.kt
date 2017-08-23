@@ -2,10 +2,9 @@ package com.neilzheng.thrall
 
 import android.app.Fragment
 import android.support.v4.app.Fragment as SupportFragment
-import android.content.Context
 import android.support.annotation.*
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.support.v7.widget.Toolbar
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -29,6 +28,8 @@ class ThrallConfig internal constructor() : Serializable {
     internal var titleAppearance = R.style.TextAppearance_AppCompat_Title
 
     internal var logoIcon = UNSETTLED_INT
+    internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
+    internal var logoMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
 
     internal var title = UNSETTLED_STRING
@@ -42,6 +43,8 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal var overflowIcon = UNSETTLED_INT
 
+    internal var menuResIds = arrayListOf<Int>()
+    internal var menuOnItemClickListener: Toolbar.OnMenuItemClickListener = Toolbar.OnMenuItemClickListener { false }
     internal var menuPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var menuMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var menuMinWidth = UNSETTLED_INT
@@ -57,9 +60,9 @@ class ThrallConfig internal constructor() : Serializable {
     private var isSaved = false
 
     object Theme {
-        val LIGHT = R.style.Toolbar_Light
-        val DARK = R.style.Toolbar_Dark
-        val DAY_NIGHT = R.style.Toolbar_DayNight
+        @JvmStatic val LIGHT = R.style.Thrall_Light
+        @JvmStatic val DARK = R.style.Thrall_Dark
+        @JvmStatic val DAY_NIGHT = R.style.Thrall_DayNight
     }
 
     fun setHeight(@Px height: Int): ThrallConfig {
@@ -73,14 +76,14 @@ class ThrallConfig internal constructor() : Serializable {
         if (!checkSavedDefaultLock()) {
             asSupportActionBar = boolean
         }
-        return this
+        return if (boolean) setIsInViewPager(false) else this
     }
 
     fun setIsInViewPager(boolean: Boolean): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             isInViewPager = boolean
         }
-        return this
+        return if (boolean) setAsActionBar(false) else this
     }
 
     fun setBackgroundColor(@ColorInt color: Int): ThrallConfig {
@@ -132,6 +135,26 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
+    fun setLogoPadding(padding: IntArray): ThrallConfig {
+        if (padding.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            logoPadding = padding
+        }
+        return this
+    }
+
+    fun setLogoMargin(@Px margin: IntArray): ThrallConfig {
+        if (margin.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            this.logoMargin = margin
+        }
+        return this
+    }
+
     fun setToolbarTheme(@StyleRes resId: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             toolbarTheme = resId
@@ -174,12 +197,12 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setTitleMargin(@Px margins: IntArray): ThrallConfig {
-        if (margins.size < 4) {
+    fun setTitleMargin(@Px margin: IntArray): ThrallConfig {
+        if (margin.size < 4) {
             //TODO throw ThrallException
         }
         if (!checkSavedDefaultLock()) {
-            titleMargin = margins
+            titleMargin = margin
         }
         return this
     }
@@ -212,8 +235,29 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
+    fun clearMenuResId(): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            this.menuResIds.clear()
+        }
+        return this
+    }
+
+    fun addMenuResId(@MenuRes resId: Int): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            this.menuResIds.add(resId)
+        }
+        return this
+    }
+
+    fun setMenuOnItemClickListener(listener: Toolbar.OnMenuItemClickListener): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            this.menuOnItemClickListener = listener
+        }
+        return this
+    }
+
     fun setMenuPadding(@Px padding: IntArray): ThrallConfig {
-        if (menuMargin.size < 4) {
+        if (padding.size < 4) {
             //TODO throw ThrallException
         }
         if (!checkSavedDefaultLock()) {
@@ -291,6 +335,7 @@ class ThrallConfig internal constructor() : Serializable {
     }
 
     fun saveDefault() {
+        Checker.check(Inner.instance)
         Inner.instance.isSaved = true
     }
 
@@ -312,19 +357,19 @@ class ThrallConfig internal constructor() : Serializable {
         private val UNSETTLED_FLOAT = ThrallConfig.UNSETTLED_FLOAT
         private val UNSETTLED_STRING = ThrallConfig.UNSETTLED_STRING
 
-        fun check(context: Context, config: ThrallConfig) {
+        fun check(config: ThrallConfig) {
             if (isUnsettled(config.height)) {
-                config.setHeight(context.resources.getDimensionPixelOffset(R.dimen.height_toolBar))
+                config.setHeight(ThrallUtils.dp2px(48))
             }
             if (isUnsettled(config.backgroundColor)) {
-                config.setBackgroundColor(context.resources.getColor(R.color.colorPrimary))
+                config.setBackgroundColor(0x3F51B5)
             }
             if (isUnsettled(config.logoIcon)) {
                 config.setLogoVisible(false)
             }
             if (config.shadowVisible) {
                 if (isUnsettled(config.elevation)) {
-                    config.setElevation(context.resources.getDimension(R.dimen.elevation_appBar))
+                    config.setElevation(ThrallUtils.dp2pxf(2))
                 }
             }
             if (isUnsettled(config.title)) {
@@ -339,6 +384,12 @@ class ThrallConfig internal constructor() : Serializable {
             (0..config.menuPadding.size - 1)
                     .filter { isUnsettled(config.menuPadding[it]) }
                     .forEach { config.menuPadding[it] = ThrallUtils.dp2px(6) }
+            (0..config.logoPadding.size - 1)
+                    .filter { isUnsettled(config.logoPadding[it]) }
+                    .forEach { config.logoPadding[it] = 0 }
+            (0..config.logoMargin.size - 1)
+                    .filter { isUnsettled(config.logoMargin[it]) }
+                    .forEach { config.logoMargin[it] = 0 }
             (0..config.menuMargin.size - 1)
                     .filter { isUnsettled(config.menuMargin[it]) }
                     .forEach { config.menuMargin[it] = 0 }
@@ -351,7 +402,7 @@ class ThrallConfig internal constructor() : Serializable {
             if (isUnsettled(config.menuTextAppearance)) {
                 config.setMenuTextAppearance(R.style.TextAppearance_AppCompat_Small)
             }
-            if(isUnsettled(config.menuHeightRatio)) {
+            if (isUnsettled(config.menuHeightRatio)) {
                 config.setMenuHeightRatio(1f)
             }
             if (isUnsettled(config.menuHeight)) {
@@ -410,6 +461,8 @@ class ThrallConfig internal constructor() : Serializable {
         result.titleAppearance = this.titleAppearance
         result.logoIcon = this.logoIcon
         result.logoVisible = this.logoVisible
+        result.logoPadding = this.logoPadding
+        result.logoMargin = this.logoMargin
         result.title = this.title
         result.titleGravity = this.titleGravity
         result.titleVisible = this.titleVisible
@@ -418,6 +471,9 @@ class ThrallConfig internal constructor() : Serializable {
         result.navigationVisible = this.navigationVisible
         result.navigationOnClickListener = this.navigationOnClickListener
         result.overflowIcon = this.overflowIcon
+        result.menuResIds = arrayListOf()
+        result.menuResIds.addAll(this.menuResIds)
+        result.menuOnItemClickListener = this.menuOnItemClickListener
         result.menuPadding = this.menuPadding
         result.menuMargin = this.menuMargin
         result.menuMinWidth = this.menuMinWidth

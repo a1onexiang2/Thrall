@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Looper
 import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.ActionMenuView
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.Log
@@ -13,6 +14,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 
 
@@ -60,6 +62,12 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         }
         if (config.logoVisible && config.logoIcon > 0) {
             logo = context.resources.getDrawable(config.logoIcon)
+            val imageList = ThrallUtils.findAllView(this, AppCompatImageView::class.java)
+            val logoView = imageList.filter { it.drawable === logo }.first()
+            logoView.setPadding(config.logoPadding[0], config.logoPadding[1], config.logoPadding[2], config.logoPadding[3])
+            val params = logoView.layoutParams as MarginLayoutParams
+            params.setMargins(config.logoMargin[0], config.logoMargin[1], config.logoMargin[2], config.logoMargin[3])
+            logoView.layoutParams = params
         }
         if (config.overflowIcon > 0) {
             overflowIcon = context.resources.getDrawable(config.overflowIcon)
@@ -84,13 +92,18 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         var waiting = true
         val thread = Thread({
             while (waiting) {
-                if (menuView.childCount == childCount) {
-                    ThrallUtils.printView(menuView)
+                val hasOverflow = ThrallUtils.findAllView(menuView, ImageView::class.java)
+                        .filter {
+                            Class.forName("android.support.v7.widget.ActionMenuPresenter\$OverflowMenuButton")
+                                    .isInstance(it)
+                        }
+                        .isNotEmpty()
+                if (menuView.childCount == childCount || hasOverflow) {
                     waiting = false
                     (0..menuView.childCount - 1)
                             .map { menuView.getChildAt(it) }
                             .filter { it is ActionMenuItemView }
-                            .forEach { post { updateMenuTextViewStyle(it as ActionMenuItemView) } }
+                            .forEach { updateMenuTextViewStyle(it as ActionMenuItemView) }
                 }
             }
         })
@@ -115,7 +128,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         layoutParams.height = config.menuHeight - config.menuMargin[1] - config.menuMargin[3]
         menuItemView.layoutParams = layoutParams
         menuItemView.setTextAppearance(context, config.menuTextAppearance)
-        menuItemView.invalidate()
+        menuItemView.postInvalidate()
     }
 
 }

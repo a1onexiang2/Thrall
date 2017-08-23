@@ -1,14 +1,14 @@
 <resources>
 
-    <style name="Toolbar.Light" parent="Theme.AppCompat.Light">
+    <style name="Thrall.Light" parent="Theme.AppCompat.Light">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
 
-    <style name="Toolbar.Dark" parent="Theme.AppCompat">
+    <style name="Thrall.Dark" parent="Theme.AppCompat">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
 
-    <style name="Toolbar.DayNight" parent="Theme.AppCompat.DayNight">
+    <style name="Thrall.DayNight" parent="Theme.AppCompat.DayNight">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
     </style>
 

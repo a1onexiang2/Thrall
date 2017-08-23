@@ -1,14 +1,7 @@
 package com.trall.sample
 
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.v7.app.AppCompatActivity
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.BackgroundColorSpan
-import android.util.Log
 import android.view.*
 import com.neilzheng.thrall.Thrall
 
@@ -28,13 +21,14 @@ class ResultFragmentActivity : AppCompatActivity() {
         transaction.commit()
         Thrall.newConfig()
                 .setTitle("ResultFragmentActivity")
-                .setAsActionBar(true)
+                .addMenuResId(R.menu.main)
+                .addMenuResId(R.menu.fragment)
                 .setScrollBehaviorEnabled(true)
                 .bind(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
+//        menuInflater.inflate(R.menu.main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

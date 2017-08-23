@@ -24,11 +24,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:design:$support_version"
-    testImplementation 'junit:junit:4.12'
 }
+
+
+apply from: 'https://raw.githubusercontent.com/BaronZ/android-common/master/gradle/android-artifacts.gradle'
+apply from: 'https://raw.githubusercontent.com/BaronZ/android-common/master/gradle/gradle-jcenter-push.gradle'
+apply from: 'kotlin-bintray.gradle'
