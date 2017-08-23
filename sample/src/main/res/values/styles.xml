@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Base applicattoolbarThemeheme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize ytoolbarThemeheme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@android:color/holo_blue_bright</item>
+        <item name="android:background">@android:color/holo_red_light</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="Menu">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>

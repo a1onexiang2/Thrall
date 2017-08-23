@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="Toolbar.Light" parent="Theme.AppCompat.Light">
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+    </style>
+
+    <style name="Toolbar.Dark" parent="Theme.AppCompat">
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+    </style>
+
+    <style name="Toolbar.DayNight" parent="Theme.AppCompat.DayNight">
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+    </style>
+
+    <style name="ActionButtonStyle" parent="Theme.AppCompat">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:maxWidth">72dp</item>
+        <item name="android:padding">6dp</item>
+    </style>
+
+</resources>

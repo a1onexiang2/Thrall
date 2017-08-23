@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="menu_max_width">164dp</dimen>
+    <dimen name="menu_min_width">48dp</dimen>
+    <dimen name="menu_paddingLeft">6dp</dimen>
+    <dimen name="menu_paddingRight">6dp</dimen>
+    <dimen name="menu_paddingTop">6dp</dimen>
+    <dimen name="menu_paddingBottom">6dp</dimen>
+    <dimen name="menu_marginLeft">46dp</dimen>
+    <dimen name="menu_marginRight">46dp</dimen>
+    <dimen name="menu_marginTop">46dp</dimen>
+    <dimen name="menu_marginBottom">46dp</dimen>
+</resources>
