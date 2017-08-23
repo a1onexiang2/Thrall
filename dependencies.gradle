@@ -8,9 +8,9 @@ ext {
 }
 
 def getVersionName() {
-    return "0.1.9"
+    return "0.1.10"
 }
 
 def getVersionCode() {
-    return 10
+    return 11
 }

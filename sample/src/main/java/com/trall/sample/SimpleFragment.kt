@@ -24,7 +24,6 @@ class SimpleFragment : Fragment() {
                 .setLogoVisible(true)
                 .addMenuResId(R.menu.main)
                 .setMenuOnItemClickListener(Toolbar.OnMenuItemClickListener {
-                    Log.e("123", "321")
                     true })
                 .setIsInViewPager(true)
                 .setLogoIcon(R.mipmap.ic_launcher_round)

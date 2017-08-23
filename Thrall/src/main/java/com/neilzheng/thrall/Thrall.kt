@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
+import android.support.annotation.IdRes
 import android.support.v4.app.Fragment as SupportFragment
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
@@ -105,6 +106,20 @@ class Thrall private constructor() {
         @JvmStatic fun onPrepareOptionsMenu(activity: Activity, menu: Menu) {
             val toolbar = ThrallUtils.findView(ThrallUtils.getRootView(activity), ThrallToolbar::class.java) ?: return
             toolbar.updateMenuStyle(menu.size())
+        }
+
+        @JvmStatic fun findMenuItem(fragment: Fragment, @IdRes id: Int): MenuItem? {
+            return ThrallUtils.findView(fragment.view.parent as ViewGroup, ThrallToolbar::class.java)
+                    ?.menu?.findItem(id)
+        }
+
+        @JvmStatic fun findMenuItem(fragment: SupportFragment, @IdRes id: Int): MenuItem? {
+            return ThrallUtils.findView(fragment.view!!.parent as ViewGroup, ThrallToolbar::class.java)
+                    ?.menu?.findItem(id)
+        }
+
+        @JvmStatic fun findMenuItem(activity: Activity, @IdRes id: Int): MenuItem? {
+            return ThrallUtils.findView(ThrallUtils.getRootView(activity), ThrallToolbar::class.java)?.menu?.findItem(id)
         }
 
         private fun doBind(activity: Activity, rootView: ViewGroup, config: ThrallConfig) {

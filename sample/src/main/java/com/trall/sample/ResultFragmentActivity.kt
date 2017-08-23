@@ -2,6 +2,7 @@ package com.trall.sample
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import com.neilzheng.thrall.Thrall
 
