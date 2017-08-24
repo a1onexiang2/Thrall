@@ -1,22 +1,23 @@
 package com.neilzheng.thrall
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Looper
 import android.support.design.widget.AppBarLayout
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.TextViewCompat
 import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.ActionMenuView
+import android.support.v7.widget.AppCompatImageButton
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import java.util.*
+import kotlin.concurrent.timerTask
 
 
 /**
@@ -44,49 +45,80 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
 
     internal fun setConfig(config: ThrallConfig) {
         this.config = config
-        val toolbarParams = layoutParams as AppBarLayout.LayoutParams
-        toolbarParams.scrollFlags = if (config.scrollBehaviorEnabled)
+        context.setTheme(config.toolbarTheme)
+        val params = layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = if (config.scrollBehaviorEnabled)
             AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL else 0
-        toolbarParams.height = config.height
-        layoutParams = toolbarParams
+        params.height = config.height
+        layoutParams = params
         setPadding(config.paddingLeft, 0, config.paddingRight, 0)
         minimumHeight = config.height
-        context.setTheme(config.toolbarTheme)
         popupTheme = config.popupTheme
         background = ColorDrawable(config.backgroundColor)
         visibility = if (config.visible) View.VISIBLE else View.GONE
-        titleView.setTextAppearance(context, config.titleAppearance)
-        titleView.text = config.title
-        titleView.gravity = config.titleGravity and Gravity.VERTICAL_GRAVITY_MASK
-        val titleParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT,
-                config.titleGravity and Gravity.HORIZONTAL_GRAVITY_MASK)
-        titleParams.setMargins(config.titleMargin[0], config.titleMargin[1],
-                config.titleMargin[2], config.titleMargin[3])
-        addView(container, Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT))
-        addView(titleView, titleParams)
         if (config.navigationVisible && config.navigationIcon > 0) {
-            navigationIcon = context.resources.getDrawable(config.navigationIcon)
+            updateNavigationView()
         }
         if (config.logoVisible && config.logoIcon > 0) {
-            logo = context.resources.getDrawable(config.logoIcon)
-            val imageList = ThrallUtils.findAllView(this, AppCompatImageView::class.java)
-            val logoView = imageList.filter { it.drawable === logo }.first()
-            val params = logoView.layoutParams as MarginLayoutParams
-            if (config.logoSize[0] > 0) {
-                params.width = config.logoSize[0]
-            }
-            if (config.logoSize[1] > 0) {
-                params.height = config.logoSize[1]
-            }
-            logoView.layoutParams = params
-            logoView.setPadding(config.logoPadding[0], config.logoPadding[1],
-                    config.logoPadding[2], config.logoPadding[3])
-            logoView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-            logoView.setOnClickListener(config.logoOnClickListener)
+            updateLogoView()
         }
         if (config.overflowIcon > 0) {
-            overflowIcon = context.resources.getDrawable(config.overflowIcon)
+            overflowIcon = ContextCompat.getDrawable(context, config.overflowIcon)
         }
+        updateCenterView()
+    }
+
+    private fun updateNavigationView() {
+        navigationIcon = ContextCompat.getDrawable(context, config.navigationIcon)
+        val imageList = ThrallUtils.findAllView(this, AppCompatImageButton::class.java)
+        val navigationView = imageList.filter { it.drawable === navigationIcon }.first()
+        val params = navigationView.layoutParams as MarginLayoutParams
+        if (config.navigationSize[0] > 0) {
+            navigationView.minimumWidth = config.navigationSize[0]
+            params.width = config.navigationSize[0]
+        }
+        if (config.navigationSize[1] > 0) {
+            params.height = config.navigationSize[1]
+        }
+        val marginArr = config.navigationMargin
+        params.setMargins(marginArr[0], marginArr[1], marginArr[2], marginArr[3])
+        navigationView.layoutParams = params
+        val paddingArr = config.navigationPadding
+        navigationView.setPadding(paddingArr[0], paddingArr[1], paddingArr[2], paddingArr[3])
+        navigationView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        navigationView.setOnClickListener(config.navigationOnClickListener)
+    }
+
+    private fun updateLogoView() {
+        logo = ContextCompat.getDrawable(context, config.logoIcon)
+        val imageList = ThrallUtils.findAllView(this, AppCompatImageView::class.java)
+        val logoView = imageList.filter { it.drawable === logo }.first()
+        val params = logoView.layoutParams as MarginLayoutParams
+        if (config.logoSize[0] > 0) {
+            params.width = config.logoSize[0]
+        }
+        if (config.logoSize[1] > 0) {
+            params.height = config.logoSize[1]
+        }
+        val marginArr = config.logoMargin
+        params.setMargins(marginArr[0], marginArr[1], marginArr[2], marginArr[3])
+        logoView.layoutParams = params
+        val paddingArr = config.logoPadding
+        logoView.setPadding(paddingArr[0], paddingArr[1], paddingArr[2], paddingArr[3])
+        logoView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        logoView.setOnClickListener(config.logoOnClickListener)
+    }
+
+    private fun updateCenterView() {
+        TextViewCompat.setTextAppearance(titleView, config.titleAppearance)
+        titleView.text = config.title
+        titleView.gravity = config.titleGravity and Gravity.VERTICAL_GRAVITY_MASK
+        val params = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT,
+                config.titleGravity and Gravity.HORIZONTAL_GRAVITY_MASK)
+        val marginArr = config.titleMargin
+        params.setMargins(marginArr[0], marginArr[1], marginArr[2], marginArr[3])
+        addView(container, Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT))
+        addView(titleView, params)
         if (null != config.customView) {
             container.addView(config.customView, config.customViewLayoutParams)
             container.visibility = View.VISIBLE
@@ -105,24 +137,37 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
     internal fun updateMenuStyle(childCount: Int) {
         val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
         var waiting = true
-        val thread = Thread({
-            while (waiting) {
-                val hasOverflow = ThrallUtils.findAllView(menuView, ImageView::class.java)
-                        .filter {
-                            Class.forName("android.support.v7.widget.ActionMenuPresenter\$OverflowMenuButton")
-                                    .isInstance(it)
-                        }
-                        .isNotEmpty()
-                if (menuView.childCount == childCount || hasOverflow) {
-                    waiting = false
-                    (0..menuView.childCount - 1)
-                            .map { menuView.getChildAt(it) }
-                            .filter { it is ActionMenuItemView }
-                            .forEach { updateMenuTextViewStyle(it as ActionMenuItemView) }
-                }
+        val timer = Timer()
+        val timerTask = timerTask {
+            if (!waiting) {
+                timer.cancel()
+                return@timerTask
             }
-        })
-        thread.start()
+            val hasOverflow = ThrallUtils.findAllView(menuView, ImageView::class.java)
+                    .filter {
+                        Class.forName("android.support.v7.widget.ActionMenuPresenter\$OverflowMenuButton")
+                                .isInstance(it)
+                    }
+                    .isNotEmpty()
+            if (menuView.childCount == childCount || hasOverflow) {
+                waiting = false
+                (0..menuView.childCount - 1)
+                        .map { menuView.getChildAt(it) }
+                        .filter { it is ActionMenuItemView }
+                        .forEach {
+                            /**
+                             *  TODO
+                             *  but I don't know why.
+                             */
+                            if (config.asActionBar) {
+                                post { updateMenuTextViewStyle(it as ActionMenuItemView) }
+                            } else {
+                                updateMenuTextViewStyle(it as ActionMenuItemView)
+                            }
+                        }
+            }
+        }
+        timer.schedule(timerTask, 0, 200)
     }
 
     private fun updateMenuTextViewStyle(menuItemView: ActionMenuItemView) {
@@ -135,7 +180,8 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         val layoutParams = menuItemView.layoutParams as MarginLayoutParams
         layoutParams.height = config.menuHeight
         menuItemView.layoutParams = layoutParams
-        menuItemView.setTextAppearance(context, config.menuTextAppearance)
+        TextViewCompat.setTextAppearance(menuItemView, config.menuTextAppearance)
+        menuItemView.background = ContextCompat.getDrawable(context, R.drawable.item_background)
         menuItemView.postInvalidate()
     }
 

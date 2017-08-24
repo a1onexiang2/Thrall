@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Thrall">
+        <attr name="height" format="dimension"/>
+        <attr name="paddingLeft" format="dimension"/>
+        <attr name="paddingRight" format="dimension"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="asActionBar" format="boolean"/>
+        <attr name="isInViewPager" format="boolean"/>
+        <attr name="visible" format="boolean"/>
+        <attr name="elevation" format="dimension"/>
+        <attr name="shadowVisible" format="boolean"/>
+        <attr name="scrollBehaviorEnabled" format="boolean"/>
+        <attr name="toolbarTheme" format="reference"/>
+        <attr name="popupTheme" format="reference"/>
+        <attr name="titleAppearance" format="reference"/>
+        <attr name="logoIcon" format="reference"/>
+        <attr name="logoWidth" format="dimension"/>
+        <attr name="logoHeight" format="dimension"/>
+        <attr name="logoPaddingLeft" format="dimension"/>
+        <attr name="logoPaddingRight" format="dimension"/>
+        <attr name="logoPaddingTop" format="dimension"/>
+        <attr name="logoPaddingBottom" format="dimension"/>
+        <attr name="logoMarginLeft" format="dimension"/>
+        <attr name="logoMarginRight" format="dimension"/>
+        <attr name="logoMarginTop" format="dimension"/>
+        <attr name="logoMarginBottom" format="dimension"/>
+        <attr name="logoVisible" format="boolean"/>
+        <attr name="title" format="string"/>
+        <attr name="titleGravity">
+            <flag name="bottom" value="80"/>
+            <flag name="center" value="17"/>
+            <flag name="center_horizontal" value="1"/>
+            <flag name="center_vertical" value="16"/>
+            <flag name="fill_horizontal" value="7"/>
+            <flag name="fill_vertical" value="112"/>
+            <flag name="left" value="3"/>
+            <flag name="right" value="5"/>
+            <flag name="top" value="48"/>
+        </attr>
+        <attr name="titleVisible" format="boolean"/>
+        <attr name="titleMarginLeft" format="dimension"/>
+        <attr name="titleMarginRight" format="dimension"/>
+        <attr name="titleMarginTop" format="dimension"/>
+        <attr name="titleMarginBottom" format="dimension"/>
+        <attr name="navigationIcon" format="reference"/>
+        <attr name="navigationWidth" format="dimension"/>
+        <attr name="navigationHeight" format="dimension"/>
+        <attr name="navigationPaddingLeft" format="dimension"/>
+        <attr name="navigationPaddingRight" format="dimension"/>
+        <attr name="navigationPaddingTop" format="dimension"/>
+        <attr name="navigationPaddingBottom" format="dimension"/>
+        <attr name="navigationMarginLeft" format="dimension"/>
+        <attr name="navigationMarginRight" format="dimension"/>
+        <attr name="navigationMarginTop" format="dimension"/>
+        <attr name="navigationMarginBottom" format="dimension"/>
+        <attr name="navigationVisible" format="boolean"/>
+        <attr name="overflowIcon" format="reference"/>
+        <attr name="menuResIds" format="reference"/>
+        <attr name="menuMinWidth" format="dimension"/>
+        <attr name="menuMaxWidth" format="dimension"/>
+        <attr name="menuTextAppearance" format="reference"/>
+        <attr name="menuHeight" format="dimension"/>
+        <attr name="menuHeightRatio" format="float"/>
+    </declare-styleable>
+</resources>

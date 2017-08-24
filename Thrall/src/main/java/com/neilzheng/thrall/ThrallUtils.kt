@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Resources
 import android.os.Build
 import android.support.annotation.Px
@@ -98,6 +99,17 @@ class ThrallUtils {
 
         internal fun getRootView(activity: Activity): ViewGroup {
             return activity.findViewById(android.R.id.content) as ViewGroup
+        }
+
+        internal fun getActivityFromView(view: View): Activity? {
+            var context = view.context
+            while (context is ContextWrapper) {
+                if (context is Activity) {
+                    return context
+                }
+                context = context.baseContext
+            }
+            return null
         }
 
         internal fun dp2pxf(dp: Int): Float {

@@ -1,6 +1,7 @@
 package com.neilzheng.thrall
 
 import android.app.Fragment
+import android.content.Context
 import android.support.v4.app.Fragment as SupportFragment
 import android.support.annotation.*
 import android.support.v7.app.AppCompatActivity
@@ -19,7 +20,7 @@ class ThrallConfig internal constructor() : Serializable {
     internal var paddingLeft = UNSETTLED_INT
     internal var paddingRight = UNSETTLED_INT
     internal var backgroundColor = UNSETTLED_INT
-    internal var asSupportActionBar = false
+    internal var asActionBar = false
     internal var isInViewPager = false
     internal var visible = true
     internal var elevation = UNSETTLED_FLOAT
@@ -32,6 +33,7 @@ class ThrallConfig internal constructor() : Serializable {
     internal var logoIcon = UNSETTLED_INT
     internal var logoSize = intArrayOf(UNSETTLED_INT, UNSETTLED_INT)
     internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
+    internal var logoMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
     internal var logoOnClickListener = View.OnClickListener {}
 
@@ -41,8 +43,13 @@ class ThrallConfig internal constructor() : Serializable {
     internal var titleMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
 
     internal var navigationIcon = UNSETTLED_INT
+    internal var navigationSize = intArrayOf(UNSETTLED_INT, UNSETTLED_INT)
+    internal var navigationPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
+    internal var navigationMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var navigationVisible = false
-    internal var navigationOnClickListener = View.OnClickListener {}
+    internal var navigationOnClickListener = View.OnClickListener { view ->
+        ThrallUtils.getActivityFromView(view)?.finish()
+    }
 
     internal var overflowIcon = UNSETTLED_INT
 
@@ -64,6 +71,84 @@ class ThrallConfig internal constructor() : Serializable {
         @JvmStatic @StyleRes fun LIGHT(): Int = R.style.Thrall_Light
         @JvmStatic @StyleRes fun DARK(): Int = R.style.Thrall_Dark
         @JvmStatic @StyleRes fun DAY_NIGHT(): Int = R.style.Thrall_DayNight
+    }
+
+    fun loadStyle(context: Context, @StyleRes resId: Int): ThrallConfig {
+        if (checkSavedDefaultLock()) return this
+        val ta = context.obtainStyledAttributes(resId, R.styleable.Thrall)
+        setHeight(ta.getDimensionPixelOffset(R.styleable.Thrall_height, height))
+        setPaddingLeft(ta.getDimensionPixelOffset(R.styleable.Thrall_paddingLeft, paddingLeft))
+        setPaddingRight(ta.getDimensionPixelOffset(R.styleable.Thrall_paddingLeft, paddingRight))
+        setBackgroundColor(ta.getColor(R.styleable.Thrall_backgroundColor, backgroundColor))
+        setAsActionBar(ta.getBoolean(R.styleable.Thrall_asActionBar, asActionBar))
+        setIsInViewPager(ta.getBoolean(R.styleable.Thrall_isInViewPager, isInViewPager))
+        setVisible(ta.getBoolean(R.styleable.Thrall_visible, visible))
+        setElevation(ta.getDimension(R.styleable.Thrall_elevation, elevation))
+        setShadowVisible(ta.getBoolean(R.styleable.Thrall_shadowVisible, shadowVisible))
+        setScrollBehaviorEnabled(ta.getBoolean(R.styleable.Thrall_scrollBehaviorEnabled, scrollBehaviorEnabled))
+        setToolbarTheme(ta.getResourceId(R.styleable.Thrall_toolbarTheme, toolbarTheme))
+        setPopupTheme(ta.getResourceId(R.styleable.Thrall_popupTheme, popupTheme))
+        setTitleAppearance(ta.getResourceId(R.styleable.Thrall_titleAppearance, titleAppearance))
+        setLogoIcon(ta.getResourceId(R.styleable.Thrall_logoIcon, logoIcon))
+        setLogoSize(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoWidth, logoSize[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoHeight, logoSize[1])))
+        setLogoPadding(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoPaddingLeft, logoPadding[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoPaddingRight, logoPadding[1]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoPaddingTop, logoPadding[2]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoPaddingBottom, logoPadding[3])))
+        setLogoMargin(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoMarginLeft, logoMargin[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoMarginRight, logoMargin[1]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoMarginTop, logoMargin[2]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_logoMarginBottom, logoMargin[3])))
+        setLogoVisible(ta.getBoolean(R.styleable.Thrall_logoVisible, logoVisible))
+        val title = ta.getString(R.styleable.Thrall_title)
+        if (title != null) {
+            setTitle(title)
+        }
+        setTitleGravity(ta.getInt(R.styleable.Thrall_titleGravity, titleGravity))
+        setTitleVisible(ta.getBoolean(R.styleable.Thrall_titleVisible, titleVisible))
+        setTitleMargin(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_titleMarginLeft, titleMargin[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_titleMarginRight, titleMargin[1]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_titleMarginTop, titleMargin[2]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_titleMarginBottom, titleMargin[3])))
+        setNavigationIcon(ta.getResourceId(R.styleable.Thrall_navigationIcon, navigationIcon))
+        setNavigationSize(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationWidth, navigationSize[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationHeight, navigationSize[1])))
+        setNavigationPadding(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationPaddingLeft, navigationPadding[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationPaddingRight, navigationPadding[1]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationPaddingTop, navigationPadding[2]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationPaddingBottom, navigationPadding[3])))
+        setNavigationMargin(intArrayOf(
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationMarginLeft, navigationMargin[0]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationMarginRight, navigationMargin[1]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationMarginTop, navigationMargin[2]),
+                ta.getDimensionPixelOffset(R.styleable.Thrall_navigationMarginBottom, navigationMargin[3])))
+        setNavigationVisible(ta.getBoolean(R.styleable.Thrall_navigationVisible, navigationVisible))
+        setOverflowIcon(ta.getResourceId(R.styleable.Thrall_overflowIcon, overflowIcon))
+        val menuResId = ta.getResourceId(R.styleable.Thrall_menuResIds, 0)
+        if (menuResId > 0) {
+            try {
+                val menuResIdArray = context.resources.getIntArray(menuResId)
+                (0..menuResIdArray.size - 1)
+                        .map { menuResIdArray[it] }
+                        .forEach { addMenuResId(it) }
+            } catch (e: Exception) {
+                addMenuResId(menuResId)
+            }
+        }
+        setMenuMinWidth(ta.getDimensionPixelOffset(R.styleable.Thrall_menuMinWidth, menuMinWidth))
+        setMenuMaxWidth(ta.getDimensionPixelOffset(R.styleable.Thrall_menuMaxWidth, menuMaxWidth))
+        setMenuTextAppearance(ta.getResourceId(R.styleable.Thrall_menuTextAppearance, menuTextAppearance))
+        setMenuHeight(ta.getDimensionPixelOffset(R.styleable.Thrall_menuHeight, menuHeight))
+        setMenuHeightRatio(ta.getFloat(R.styleable.Thrall_menuHeightRatio, menuHeightRatio))
+        ta.recycle()
+        return this
     }
 
     fun setHeight(@Px height: Int): ThrallConfig {
@@ -89,7 +174,7 @@ class ThrallConfig internal constructor() : Serializable {
 
     fun setAsActionBar(boolean: Boolean): ThrallConfig {
         if (!checkSavedDefaultLock()) {
-            asSupportActionBar = boolean
+            asActionBar = boolean
         }
         return if (boolean) setIsInViewPager(false) else this
     }
@@ -177,6 +262,16 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
+    fun setLogoMargin(margin: IntArray): ThrallConfig {
+        if (margin.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            logoMargin = margin
+        }
+        return this
+    }
+
     fun setToolbarTheme(@StyleRes resId: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             toolbarTheme = resId
@@ -239,6 +334,36 @@ class ThrallConfig internal constructor() : Serializable {
     fun setNavigationVisible(visible: Boolean): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             navigationVisible = visible
+        }
+        return this
+    }
+
+    fun setNavigationSize(size: IntArray): ThrallConfig {
+        if (size.size < 2) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            navigationSize = size
+        }
+        return this
+    }
+
+    fun setNavigationPadding(padding: IntArray): ThrallConfig {
+        if (padding.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            navigationPadding = padding
+        }
+        return this
+    }
+
+    fun setNavigationMargin(margin: IntArray): ThrallConfig {
+        if (margin.size < 4) {
+            //TODO throw ThrallException
+        }
+        if (!checkSavedDefaultLock()) {
+            navigationMargin = margin
         }
         return this
     }
@@ -385,15 +510,13 @@ class ThrallConfig internal constructor() : Serializable {
             if (isUnsettled(config.titleAppearance)) {
                 config.setTitleAppearance(R.style.TextAppearance_AppCompat_Title)
             }
-            (0..config.titleMargin.size - 1)
-                    .filter { isUnsettled(config.titleMargin[it]) }
-                    .forEach { config.titleMargin[it] = 0 }
-            (0..config.logoSize.size - 1)
-                    .filter { isUnsettled(config.logoSize[it]) }
-                    .forEach { config.logoSize[it] = 0 }
-            (0..config.logoPadding.size - 1)
-                    .filter { isUnsettled(config.logoPadding[it]) }
-                    .forEach { config.logoPadding[it] = 0 }
+            setArrayWithDefault(config.titleMargin, 0)
+            setArrayWithDefault(config.logoSize, 0)
+            setArrayWithDefault(config.logoPadding, 0)
+            setArrayWithDefault(config.logoMargin, 0)
+            setArrayWithDefault(config.navigationSize, 0)
+            setArrayWithDefault(config.navigationMargin, 0)
+            setArrayWithDefault(config.navigationPadding, 0)
             if (isUnsettled(config.menuTextAppearance)) {
                 config.setMenuTextAppearance(R.style.TextAppearance_AppCompat_Small)
             }
@@ -409,6 +532,12 @@ class ThrallConfig internal constructor() : Serializable {
             if (isUnsettled(config.menuMinWidth)) {
                 config.menuMinWidth
             }
+        }
+
+        private fun setArrayWithDefault(array: IntArray, default: Int) {
+            (0..array.size - 1)
+                    .filter { isUnsettled(array[it]) }
+                    .forEach { array[it] = default }
         }
 
         private fun isUnsettled(int: Int): Boolean {
@@ -449,7 +578,7 @@ class ThrallConfig internal constructor() : Serializable {
         result.paddingLeft = this.paddingLeft
         result.paddingRight = this.paddingRight
         result.backgroundColor = this.backgroundColor
-        result.asSupportActionBar = this.asSupportActionBar
+        result.asActionBar = this.asActionBar
         result.isInViewPager = this.isInViewPager
         result.visible = this.visible
         result.elevation = this.elevation
@@ -461,6 +590,7 @@ class ThrallConfig internal constructor() : Serializable {
         result.logoIcon = this.logoIcon
         result.logoSize = this.logoSize
         result.logoPadding = this.logoPadding
+        result.logoMargin = this.logoMargin
         result.logoVisible = this.logoVisible
         result.logoOnClickListener = this.logoOnClickListener
         result.title = this.title
@@ -469,6 +599,9 @@ class ThrallConfig internal constructor() : Serializable {
         result.titleMargin = this.titleMargin
         result.navigationIcon = this.navigationIcon
         result.navigationVisible = this.navigationVisible
+        result.navigationSize = this.navigationSize
+        result.navigationPadding = this.navigationPadding
+        result.navigationMargin = this.navigationMargin
         result.navigationOnClickListener = this.navigationOnClickListener
         result.overflowIcon = this.overflowIcon
         result.menuResIds = arrayListOf()

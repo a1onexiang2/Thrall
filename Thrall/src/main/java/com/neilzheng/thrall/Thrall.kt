@@ -2,9 +2,6 @@ package com.neilzheng.thrall
 
 import android.app.Activity
 import android.app.Fragment
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Build
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment as SupportFragment
@@ -12,20 +9,10 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.text.Spannable
-import android.text.style.TextAppearanceSpan
 import android.view.View
 import android.view.ViewGroup
-import android.text.Spanned
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.BackgroundColorSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
-import android.widget.TextView
 
 
 /**
@@ -50,7 +37,7 @@ class Thrall private constructor() {
         }
 
         @JvmStatic fun bind(fragment: Fragment, config: ThrallConfig) {
-            if (config.asSupportActionBar) {
+            if (config.asActionBar) {
                 val activity = fragment.activity as? AppCompatActivity ?: //TODO not AppCompactActivity Exception
                         throw ThrallException()
                 doBind(activity, ThrallUtils.getRootView(activity), config)
@@ -63,7 +50,7 @@ class Thrall private constructor() {
         }
 
         @JvmStatic fun bind(fragment: SupportFragment, config: ThrallConfig) {
-            if (config.asSupportActionBar) {
+            if (config.asActionBar) {
                 val activity = fragment.activity as? AppCompatActivity ?: //TODO not AppCompactActivity Exception
                         throw ThrallException()
                 doBind(activity, ThrallUtils.getRootView(activity), config)
@@ -108,13 +95,25 @@ class Thrall private constructor() {
             toolbar.updateMenuStyle(menu.size())
         }
 
+        @JvmStatic fun findToolbar(fragment: SupportFragment): ThrallToolbar? {
+            return ThrallUtils.findView(ThrallUtils.getRootView(fragment.activity), ThrallToolbar::class.java)
+        }
+
+        @JvmStatic fun findToolbar(fragment: Fragment): ThrallToolbar? {
+            return ThrallUtils.findView(ThrallUtils.getRootView(fragment.activity), ThrallToolbar::class.java)
+        }
+
+        @JvmStatic fun findToolbar(activity: Activity): ThrallToolbar? {
+            return ThrallUtils.findView(ThrallUtils.getRootView(activity), ThrallToolbar::class.java)
+        }
+
         @JvmStatic fun findMenuItem(fragment: Fragment, @IdRes id: Int): MenuItem? {
-            return ThrallUtils.findView(fragment.view.parent as ViewGroup, ThrallToolbar::class.java)
+            return ThrallUtils.findView(fragment.view as ViewGroup, ThrallToolbar::class.java)
                     ?.menu?.findItem(id)
         }
 
         @JvmStatic fun findMenuItem(fragment: SupportFragment, @IdRes id: Int): MenuItem? {
-            return ThrallUtils.findView(fragment.view!!.parent as ViewGroup, ThrallToolbar::class.java)
+            return ThrallUtils.findView(fragment.view as ViewGroup, ThrallToolbar::class.java)
                     ?.menu?.findItem(id)
         }
 
@@ -133,7 +132,7 @@ class Thrall private constructor() {
             val container = View.inflate(activity, R.layout.layout_container, null) as CoordinatorLayout
             val appBarContainer = container.findViewById(R.id.layout_appBar) as AppBarLayout
             toolbar = View.inflate(activity, R.layout.toolbar, null) as ThrallToolbar
-            container.fitsSystemWindows = !config.isInViewPager || config.asSupportActionBar
+            container.fitsSystemWindows = !config.isInViewPager || config.asActionBar
             val toolbarParams = AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT,
                     AppBarLayout.LayoutParams.WRAP_CONTENT)
             appBarContainer.addView(toolbar, toolbarParams)
@@ -146,7 +145,7 @@ class Thrall private constructor() {
 
             ThrallUtils.addToRootView(rootView, container)
 
-            if (config.asSupportActionBar) {
+            if (config.asActionBar) {
                 if (activity is AppCompatActivity) {
                     activity.setSupportActionBar(toolbar)
                     activity.supportActionBar!!.setDisplayHomeAsUpEnabled(config.navigationVisible)

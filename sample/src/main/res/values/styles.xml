@@ -17,7 +17,6 @@
 
     <style name="Menu">
         <item name="android:textColor">@android:color/holo_red_light</item>
-        <item name="android:background">@android:color/holo_blue_bright</item>
         <item name="android:textSize">12sp</item>
     </style>
 
