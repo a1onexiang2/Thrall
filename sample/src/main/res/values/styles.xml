@@ -7,17 +7,45 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
-    <style name="Title" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@android:color/holo_blue_bright</item>
-        <item name="android:background">@android:color/holo_red_light</item>
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">italic</item>
+    <style name="Toolbar">
+        <item name="height">48dp</item>
+        <item name="paddingLeft">6dp</item>
+        <item name="paddingRight">6dp</item>
+        <item name="backgroundColor">@android:color/white</item>
+        <item name="shadowVisible">true</item>
+        <item name="elevation">1dp</item>
+        <item name="logoIcon">@mipmap/ic_launcher</item>
+        <item name="logoPaddingLeft">6dp</item>
+        <item name="logoPaddingRight">6dp</item>
+        <item name="logoPaddingBottom">6dp</item>
+        <item name="logoPaddingTop">6dp</item>
+        <item name="logoWidth">36dp</item>
+        <item name="logoHeight">36dp</item>
+        <item name="navigationWidth">36dp</item>
+        <item name="navigationHeight">36dp</item>
+        <item name="navigationIcon">@drawable/icon_back</item>
+        <item name="navigationPaddingLeft">6dp</item>
+        <item name="navigationPaddingRight">6dp</item>
+        <item name="navigationPaddingBottom">6dp</item>
+        <item name="navigationPaddingTop">6dp</item>
+        <item name="titleAppearance">@style/Toolbar_Title</item>
+        <item name="titleGravity">center</item>
+        <item name="titleMarginLeft">6dp</item>
+        <item name="titleMarginRight">6dp</item>
+        <item name="titleMarginBottom">6dp</item>
+        <item name="titleMarginTop">6dp</item>
+        <item name="menuTextAppearance">@style/Toolbar_Menu</item>
+        <item name="menuMinWidth">36dp</item>
+        <item name="menuHeight">36dp</item>
     </style>
 
-    <style name="Menu">
-        <item name="android:textColor">@android:color/holo_red_light</item>
-        <item name="android:textSize">12sp</item>
+    <style name="Toolbar_Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#446688</item>
     </style>
 
+    <style name="Toolbar_Menu">
+        <item name="android:textColor">#99aabb</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

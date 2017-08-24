@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment as SupportFragment
 import android.support.annotation.*
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -412,7 +413,7 @@ class ThrallConfig internal constructor() : Serializable {
 
     fun setMenuMinWidth(@Px minWidth: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
-            if (this.menuMaxWidth != UNSETTLED_INT && menuMaxWidth < minWidth) {
+            if (this.menuMaxWidth != UNSETTLED_INT && minWidth != UNSETTLED_INT && menuMaxWidth < minWidth) {
                 //TODO throw ThrallException
                 throw ThrallException()
             }
@@ -423,7 +424,7 @@ class ThrallConfig internal constructor() : Serializable {
 
     fun setMenuMaxWidth(@Px maxWidth: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
-            if (this.menuMinWidth != UNSETTLED_INT && menuMinWidth > maxWidth) {
+            if (this.menuMinWidth != UNSETTLED_INT && maxWidth != UNSETTLED_INT && menuMinWidth > maxWidth) {
                 //TODO throw ThrallException
                 throw ThrallException()
             }

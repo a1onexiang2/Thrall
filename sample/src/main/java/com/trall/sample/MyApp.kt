@@ -18,17 +18,9 @@ class MyApp : Application() {
 
     private fun initThrall() {
         Thrall.defaultConfig()
-                .setBackgroundColor(Color.WHITE)
-                .setShadowVisible(true)
-                .setNavigationIcon(R.drawable.icon_back)
-                .setTitleGravity(Gravity.CENTER)
-                .setTitleAppearance(R.style.Title)
                 .setToolbarTheme(ThrallConfig.Theme.LIGHT())
                 .setPopupTheme(ThrallConfig.Theme.LIGHT())
-                .setMenuTextAppearance(R.style.Menu)
-                .setMenuMinWidth(resources.getDimensionPixelOffset(R.dimen.menu_min_width))
-                .setMenuMaxWidth(resources.getDimensionPixelOffset(R.dimen.menu_max_width))
-                .setMenuHeightRatio(1f)
+                .loadStyle(this, R.style.Toolbar)
                 .saveDefault()
     }
 }
