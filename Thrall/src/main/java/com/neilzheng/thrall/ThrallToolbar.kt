@@ -32,6 +32,9 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
 
     private val container: FrameLayout = FrameLayout(getContext())
     private val titleView: TextView = TextView(getContext())
+    private var timer: Timer? = null
+    private var timerTask: TimerTask? = null
+    private var looping = true
     private lateinit var config: ThrallConfig
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -136,11 +139,16 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
      */
     internal fun updateMenuStyle(childCount: Int) {
         val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
-        var waiting = true
-        val timer = Timer()
-        val timerTask = timerTask {
-            if (!waiting) {
-                timer.cancel()
+        timerTask = timerTask {
+            if (!looping) {
+                if (timerTask != null) {
+                    timerTask!!.cancel()
+                    timerTask = null
+                }
+                if (timer != null) {
+                    timer!!.cancel()
+                    timer = null
+                }
                 return@timerTask
             }
             val hasOverflow = ThrallUtils.findAllView(menuView, ImageView::class.java)
@@ -150,7 +158,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
                     }
                     .isNotEmpty()
             if (menuView.childCount == childCount || hasOverflow) {
-                waiting = false
+                looping = false
                 (0..menuView.childCount - 1)
                         .map { menuView.getChildAt(it) }
                         .filter { it is ActionMenuItemView }
@@ -167,7 +175,8 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
                         }
             }
         }
-        timer.schedule(timerTask, 0, 200)
+        timer = Timer()
+        timer!!.schedule(timerTask, 0, 200)
     }
 
     private fun updateMenuTextViewStyle(menuItemView: ActionMenuItemView) {
