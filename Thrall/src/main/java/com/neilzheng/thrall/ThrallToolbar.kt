@@ -163,15 +163,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
                         .map { menuView.getChildAt(it) }
                         .filter { it is ActionMenuItemView }
                         .forEach {
-                            /**
-                             *  TODO
-                             *  but I don't know why.
-                             */
-                            if (config.asActionBar) {
-                                post { updateMenuTextViewStyle(it as ActionMenuItemView) }
-                            } else {
-                                updateMenuTextViewStyle(it as ActionMenuItemView)
-                            }
+                            updateMenuTextViewStyle(it as ActionMenuItemView)
                         }
             }
         }
@@ -180,17 +172,23 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
     }
 
     private fun updateMenuTextViewStyle(menuItemView: ActionMenuItemView) {
-        if (config.menuMinWidth > 0) {
-            menuItemView.minWidth = config.menuMinWidth
+        /**
+         *  TODO
+         *  but I don't know why.
+         */
+        post {
+            if (config.menuMinWidth > 0) {
+                menuItemView.minWidth = config.menuMinWidth
+            }
+            if (config.menuMaxWidth > 0) {
+                menuItemView.maxWidth = config.menuMaxWidth
+            }
+            val layoutParams = menuItemView.layoutParams as MarginLayoutParams
+            layoutParams.height = config.menuHeight
+            menuItemView.layoutParams = layoutParams
+            TextViewCompat.setTextAppearance(menuItemView, config.menuTextAppearance)
+            menuItemView.background = ContextCompat.getDrawable(context, R.drawable.item_background)
         }
-        if (config.menuMaxWidth > 0) {
-            menuItemView.maxWidth = config.menuMaxWidth
-        }
-        val layoutParams = menuItemView.layoutParams as MarginLayoutParams
-        layoutParams.height = config.menuHeight
-        menuItemView.layoutParams = layoutParams
-        TextViewCompat.setTextAppearance(menuItemView, config.menuTextAppearance)
-        menuItemView.background = ContextCompat.getDrawable(context, R.drawable.item_background)
         menuItemView.postInvalidate()
     }
 
