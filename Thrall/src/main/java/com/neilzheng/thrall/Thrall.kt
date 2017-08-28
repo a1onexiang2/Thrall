@@ -132,7 +132,7 @@ class Thrall private constructor() {
             val container = View.inflate(activity, R.layout.layout_container, null) as CoordinatorLayout
             val appBarContainer = container.findViewById(R.id.layout_appBar) as AppBarLayout
             toolbar = View.inflate(activity, R.layout.toolbar, null) as ThrallToolbar
-            container.fitsSystemWindows = !config.isInViewPager || config.asActionBar
+            container.fitsSystemWindows = config.fitSystem
             val toolbarParams = AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT,
                     AppBarLayout.LayoutParams.WRAP_CONTENT)
             appBarContainer.addView(toolbar, toolbarParams)

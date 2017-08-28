@@ -5,6 +5,7 @@
         <attr name="paddingLeft" format="dimension"/>
         <attr name="paddingRight" format="dimension"/>
         <attr name="backgroundColor" format="color"/>
+        <attr name="fitSystem" format="boolean"/>
         <attr name="asActionBar" format="boolean"/>
         <attr name="isInViewPager" format="boolean"/>
         <attr name="visible" format="boolean"/>

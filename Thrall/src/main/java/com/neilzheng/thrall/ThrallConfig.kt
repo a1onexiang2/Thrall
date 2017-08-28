@@ -21,6 +21,7 @@ class ThrallConfig internal constructor() : Serializable {
     internal var paddingLeft = UNSETTLED_INT
     internal var paddingRight = UNSETTLED_INT
     internal var backgroundColor = UNSETTLED_INT
+    internal var fitSystem = true
     internal var asActionBar = false
     internal var isInViewPager = false
     internal var visible = true
@@ -81,6 +82,7 @@ class ThrallConfig internal constructor() : Serializable {
         setPaddingLeft(ta.getDimensionPixelOffset(R.styleable.Thrall_paddingLeft, paddingLeft))
         setPaddingRight(ta.getDimensionPixelOffset(R.styleable.Thrall_paddingLeft, paddingRight))
         setBackgroundColor(ta.getColor(R.styleable.Thrall_backgroundColor, backgroundColor))
+        setFitSystem(ta.getBoolean(R.styleable.Thrall_fitSystem, fitSystem))
         setAsActionBar(ta.getBoolean(R.styleable.Thrall_asActionBar, asActionBar))
         setIsInViewPager(ta.getBoolean(R.styleable.Thrall_isInViewPager, isInViewPager))
         setVisible(ta.getBoolean(R.styleable.Thrall_visible, visible))
@@ -169,6 +171,13 @@ class ThrallConfig internal constructor() : Serializable {
     fun setPaddingRight(@Px padding: Int): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             this.paddingRight = padding
+        }
+        return this
+    }
+
+    fun setFitSystem(boolean: Boolean): ThrallConfig {
+        if (!checkSavedDefaultLock()) {
+            fitSystem = boolean
         }
         return this
     }
@@ -579,6 +588,7 @@ class ThrallConfig internal constructor() : Serializable {
         result.paddingLeft = this.paddingLeft
         result.paddingRight = this.paddingRight
         result.backgroundColor = this.backgroundColor
+        result.fitSystem = this.fitSystem
         result.asActionBar = this.asActionBar
         result.isInViewPager = this.isInViewPager
         result.visible = this.visible
