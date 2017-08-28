@@ -137,10 +137,12 @@ class Thrall private constructor() {
                     AppBarLayout.LayoutParams.WRAP_CONTENT)
             appBarContainer.addView(toolbar, toolbarParams)
             toolbar.setConfig(config)
+
+            val elevation = if (config.shadowVisible) config.elevation else 0f
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ThrallUtils.setElevation(appBarContainer, config.elevation)
+                ThrallUtils.setElevation(appBarContainer, elevation)
             } else {
-                ViewCompat.setElevation(appBarContainer, config.elevation)
+                ViewCompat.setElevation(appBarContainer, elevation)
             }
 
             ThrallUtils.addToRootView(rootView, container)
