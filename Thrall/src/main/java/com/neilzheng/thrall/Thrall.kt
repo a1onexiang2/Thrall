@@ -22,8 +22,6 @@ class Thrall private constructor() {
 
     companion object {
 
-        private lateinit var toolbar: ThrallToolbar
-
         @JvmStatic fun bind(fragment: Fragment) {
             bind(fragment, ThrallConfig.default())
         }
@@ -131,7 +129,7 @@ class Thrall private constructor() {
 
             val container = View.inflate(activity, R.layout.layout_container, null) as CoordinatorLayout
             val appBarContainer = container.findViewById(R.id.layout_appBar) as AppBarLayout
-            toolbar = View.inflate(activity, R.layout.toolbar, null) as ThrallToolbar
+            val toolbar = View.inflate(activity, R.layout.toolbar, null) as ThrallToolbar
             container.fitsSystemWindows = config.fitSystem
             val toolbarParams = AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT,
                     AppBarLayout.LayoutParams.WRAP_CONTENT)

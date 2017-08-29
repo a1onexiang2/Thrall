@@ -1,7 +1,9 @@
 package com.neilzheng.thrall
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
@@ -140,7 +142,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
     internal fun updateMenuStyle(childCount: Int) {
         val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
         timerTask = timerTask {
-            if (!looping) {
+            if (!looping || isFinished()) {
                 if (timerTask != null) {
                     timerTask!!.cancel()
                     timerTask = null
@@ -169,6 +171,16 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         }
         timer = Timer()
         timer!!.schedule(timerTask, 0, 200)
+    }
+
+    private fun isFinished(): Boolean {
+        if (context is Activity) {
+            val activity = context as Activity
+            return (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && activity.isDestroyed)
+                    || activity.isFinishing
+        } else {
+            return context == null
+        }
     }
 
     private fun updateMenuTextViewStyle(menuItemView: ActionMenuItemView) {
