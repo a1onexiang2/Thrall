@@ -7,10 +7,15 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.support.annotation.Px
 import android.support.annotation.RequiresApi
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.TextViewCompat
+import android.support.v7.view.menu.ActionMenuItemView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup

@@ -76,23 +76,6 @@ class Thrall private constructor() {
             return ThrallConfig()
         }
 
-        @JvmStatic fun onPrepareOptionsMenu(fragment: SupportFragment, menu: Menu) {
-            val toolbar = ThrallUtils.findView(ThrallUtils.getRootView(fragment.activity),
-                    ThrallToolbar::class.java) ?: return
-            toolbar.updateMenuStyle(menu.size())
-        }
-
-        @JvmStatic fun onPrepareOptionsMenu(fragment: Fragment, menu: Menu) {
-            val toolbar = ThrallUtils.findView(ThrallUtils.getRootView(fragment.activity),
-                    ThrallToolbar::class.java) ?: return
-            toolbar.updateMenuStyle(menu.size())
-        }
-
-        @JvmStatic fun onPrepareOptionsMenu(activity: Activity, menu: Menu) {
-            val toolbar = ThrallUtils.findView(ThrallUtils.getRootView(activity), ThrallToolbar::class.java) ?: return
-            toolbar.updateMenuStyle(menu.size())
-        }
-
         @JvmStatic fun findToolbar(fragment: SupportFragment): ThrallToolbar? {
             return ThrallUtils.findView(ThrallUtils.getRootView(fragment.activity), ThrallToolbar::class.java)
         }
@@ -158,7 +141,6 @@ class Thrall private constructor() {
                         toolbar.inflateMenu(it)
                     }
                 }
-                toolbar.updateMenuStyle(toolbar.menu.size())
                 toolbar.setOnMenuItemClickListener(config.menuOnItemClickListener)
             }
 

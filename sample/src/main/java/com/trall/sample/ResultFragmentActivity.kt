@@ -44,11 +44,6 @@ class ResultFragmentActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        Thrall.onPrepareOptionsMenu(this, menu)
-        return super.onPrepareOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.edit -> {

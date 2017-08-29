@@ -58,10 +58,5 @@
         <attr name="navigationVisible" format="boolean"/>
         <attr name="overflowIcon" format="reference"/>
         <attr name="menuResIds" format="reference"/>
-        <attr name="menuMinWidth" format="dimension"/>
-        <attr name="menuMaxWidth" format="dimension"/>
-        <attr name="menuTextAppearance" format="reference"/>
-        <attr name="menuHeight" format="dimension"/>
-        <attr name="menuHeightRatio" format="float"/>
     </declare-styleable>
 </resources>

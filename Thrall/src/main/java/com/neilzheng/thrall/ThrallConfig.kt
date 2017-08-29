@@ -57,11 +57,6 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal var menuResIds = arrayListOf<Int>()
     internal var menuOnItemClickListener = Toolbar.OnMenuItemClickListener { false }
-    internal var menuMinWidth = UNSETTLED_INT
-    internal var menuMaxWidth = UNSETTLED_INT
-    internal var menuTextAppearance = UNSETTLED_INT
-    internal var menuHeight = UNSETTLED_INT
-    internal var menuHeightRatio = UNSETTLED_FLOAT
 
     internal var customView: View? = null
     internal var customViewLayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -145,11 +140,6 @@ class ThrallConfig internal constructor() : Serializable {
                 addMenuResId(menuResId)
             }
         }
-        setMenuMinWidth(ta.getDimensionPixelOffset(R.styleable.Thrall_menuMinWidth, menuMinWidth))
-        setMenuMaxWidth(ta.getDimensionPixelOffset(R.styleable.Thrall_menuMaxWidth, menuMaxWidth))
-        setMenuTextAppearance(ta.getResourceId(R.styleable.Thrall_menuTextAppearance, menuTextAppearance))
-        setMenuHeight(ta.getDimensionPixelOffset(R.styleable.Thrall_menuHeight, menuHeight))
-        setMenuHeightRatio(ta.getFloat(R.styleable.Thrall_menuHeightRatio, menuHeightRatio))
         ta.recycle()
         return this
     }
@@ -413,49 +403,6 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setMenuTextAppearance(@StyleRes resId: Int): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            this.menuTextAppearance = resId
-        }
-        return this
-    }
-
-    fun setMenuMinWidth(@Px minWidth: Int): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            if (this.menuMaxWidth != UNSETTLED_INT && minWidth != UNSETTLED_INT && menuMaxWidth < minWidth) {
-                //TODO throw ThrallException
-                throw ThrallException()
-            }
-            this.menuMinWidth = minWidth
-        }
-        return this
-    }
-
-    fun setMenuMaxWidth(@Px maxWidth: Int): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            if (this.menuMinWidth != UNSETTLED_INT && maxWidth != UNSETTLED_INT && menuMinWidth > maxWidth) {
-                //TODO throw ThrallException
-                throw ThrallException()
-            }
-            this.menuMaxWidth = maxWidth
-        }
-        return this
-    }
-
-    fun setMenuHeight(@Px height: Int): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            this.menuHeight = height
-        }
-        return this
-    }
-
-    fun setMenuHeightRatio(@FloatRange(from = 0.0, to = 1.0) ratio: Float): ThrallConfig {
-        if (!checkSavedDefaultLock()) {
-            this.menuHeightRatio = ratio
-        }
-        return this
-    }
-
     fun setCustomView(view: View): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             this.customView = view
@@ -527,21 +474,6 @@ class ThrallConfig internal constructor() : Serializable {
             setArrayWithDefault(config.navigationSize, 0)
             setArrayWithDefault(config.navigationMargin, 0)
             setArrayWithDefault(config.navigationPadding, 0)
-            if (isUnsettled(config.menuTextAppearance)) {
-                config.setMenuTextAppearance(R.style.TextAppearance_AppCompat_Small)
-            }
-            if (isUnsettled(config.menuHeightRatio)) {
-                config.setMenuHeightRatio(1f)
-            }
-            if (isUnsettled(config.menuHeight)) {
-                config.setMenuHeight((config.height * config.menuHeightRatio).toInt())
-            }
-            if (isUnsettled(config.menuMaxWidth)) {
-                config.menuMaxWidth
-            }
-            if (isUnsettled(config.menuMinWidth)) {
-                config.menuMinWidth
-            }
         }
 
         private fun setArrayWithDefault(array: IntArray, default: Int) {
@@ -618,11 +550,6 @@ class ThrallConfig internal constructor() : Serializable {
         result.menuResIds = arrayListOf()
         result.menuResIds.addAll(this.menuResIds)
         result.menuOnItemClickListener = this.menuOnItemClickListener
-        result.menuMinWidth = this.menuMinWidth
-        result.menuMaxWidth = this.menuMaxWidth
-        result.menuTextAppearance = this.menuTextAppearance
-        result.menuHeight = this.menuHeight
-        result.menuHeightRatio = this.menuHeightRatio
         result.customView = this.customView
         result.customViewLayoutParams = this.customViewLayoutParams
         return result

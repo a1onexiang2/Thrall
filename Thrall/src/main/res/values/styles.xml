@@ -2,14 +2,20 @@
 
     <style name="Thrall.Light" parent="Theme.AppCompat.Light">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="actionMenuTextColor">@color/MenuText</item>
     </style>
 
     <style name="Thrall.Dark" parent="Theme.AppCompat">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="actionMenuTextColor">@color/MenuText</item>
     </style>
 
     <style name="Thrall.DayNight" parent="Theme.AppCompat.DayNight">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="actionMenuTextColor">@color/MenuText</item>
     </style>
 
     <style name="ActionButtonStyle" parent="Theme.AppCompat">
@@ -17,5 +23,7 @@
         <item name="android:maxWidth">72dp</item>
         <item name="android:padding">6dp</item>
     </style>
+
+    <style name="MenuStyle" parent="TextAppearance.AppCompat.Small" />
 
 </resources>

@@ -34,9 +34,6 @@
         <item name="titleMarginRight">6dp</item>
         <item name="titleMarginBottom">6dp</item>
         <item name="titleMarginTop">6dp</item>
-        <item name="menuTextAppearance">@style/Toolbar_Menu</item>
-        <item name="menuMinWidth">36dp</item>
-        <item name="menuHeight">36dp</item>
     </style>
 
     <style name="Toolbar_Title">

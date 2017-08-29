@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Thrall.Light" parent="Theme.AppCompat.Light">
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="android:actionMenuTextColor">@color/MenuText</item>
+    </style>
+
+    <style name="Thrall.Dark" parent="Theme.AppCompat">
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="android:actionMenuTextColor">@color/MenuText</item>
+    </style>
+
+    <style name="Thrall.DayNight" parent="Theme.AppCompat.DayNight">
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuStyle</item>
+        <item name="android:actionMenuTextColor">@color/MenuText</item>
+    </style>
+
+</resources>

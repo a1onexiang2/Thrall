@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
@@ -133,75 +135,4 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             titleView.visibility == if (config.titleVisible) View.VISIBLE else View.GONE
         }
     }
-
-    /**
-     * TODO A better implement should be here but currently I don't know how.
-     * The lifecycle of an Activity is onCreate() -> onResume -> onCreateOptionsMenu() -> onPrepareOptionsMenu(),
-     * and the MenuItemViews are available only after onPrepareOptionsMenu().
-     */
-    internal fun updateMenuStyle(childCount: Int) {
-        val menuView = ThrallUtils.findView(this, ActionMenuView::class.java) ?: return
-        timerTask = timerTask {
-            if (!looping || isFinished()) {
-                if (timerTask != null) {
-                    timerTask!!.cancel()
-                    timerTask = null
-                }
-                if (timer != null) {
-                    timer!!.cancel()
-                    timer = null
-                }
-                return@timerTask
-            }
-            val hasOverflow = ThrallUtils.findAllView(menuView, ImageView::class.java)
-                    .filter {
-                        Class.forName("android.support.v7.widget.ActionMenuPresenter\$OverflowMenuButton")
-                                .isInstance(it)
-                    }
-                    .isNotEmpty()
-            if (menuView.childCount == childCount || hasOverflow) {
-                looping = false
-                (0..menuView.childCount - 1)
-                        .map { menuView.getChildAt(it) }
-                        .filter { it is ActionMenuItemView }
-                        .forEach {
-                            updateMenuTextViewStyle(it as ActionMenuItemView)
-                        }
-            }
-        }
-        timer = Timer()
-        timer!!.schedule(timerTask, 0, 200)
-    }
-
-    private fun isFinished(): Boolean {
-        if (context is Activity) {
-            val activity = context as Activity
-            return (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && activity.isDestroyed)
-                    || activity.isFinishing
-        } else {
-            return context == null
-        }
-    }
-
-    private fun updateMenuTextViewStyle(menuItemView: ActionMenuItemView) {
-        /**
-         *  TODO
-         *  but I don't know why.
-         */
-        post {
-            if (config.menuMinWidth > 0) {
-                menuItemView.minWidth = config.menuMinWidth
-            }
-            if (config.menuMaxWidth > 0) {
-                menuItemView.maxWidth = config.menuMaxWidth
-            }
-            val layoutParams = menuItemView.layoutParams as MarginLayoutParams
-            layoutParams.height = config.menuHeight
-            menuItemView.layoutParams = layoutParams
-            TextViewCompat.setTextAppearance(menuItemView, config.menuTextAppearance)
-            menuItemView.background = ContextCompat.getDrawable(context, R.drawable.item_background)
-        }
-        menuItemView.postInvalidate()
-    }
-
 }
