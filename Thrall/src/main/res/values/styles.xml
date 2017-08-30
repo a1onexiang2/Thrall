@@ -1,30 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="Thrall.Light" parent="Theme.AppCompat.Light">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="actionMenuTextAppearance">@style/Thrall.MenuStyle.Light</item>
-        <item name="android:actionMenuTextAppearance">@style/Thrall.MenuStyle.Light</item>
-        <item name="actionMenuTextColor">@color/Thrall_MenuText_Light</item>
-        <item name="android:actionMenuTextColor">@color/Thrall_MenuText_Light</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle_Light</item>
+        <item name="actionMenuTextColor">@color/MenuText_Light</item>
+        <item name="android:colorBackground">@android:color/white</item>
     </style>
 
     <style name="Thrall.Dark" parent="Theme.AppCompat">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="actionMenuTextAppearance">@style/Thrall.MenuStyle.Dark</item>
-        <item name="android:actionMenuTextAppearance">@style/Thrall.MenuStyle.Dark</item>
-        <item name="actionMenuTextColor">@color/Thrall_MenuText_Dark</item>
-        <item name="android:actionMenuTextColor">@color/Thrall_MenuText_Dark</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle_Dark</item>
+        <item name="actionMenuTextColor">@color/MenuText_Dark</item>
+        <item name="android:colorBackground">@android:color/black</item>
     </style>
 
     <style name="Thrall.DayNight" parent="Theme.AppCompat.DayNight">
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="actionMenuTextAppearance">@style/Thrall.MenuStyle.DayNight</item>
-        <item name="android:actionMenuTextAppearance">@style/Thrall.MenuStyle.DayNight</item>
-        <item name="actionMenuTextColor">@color/Thrall_MenuText_DayNight</item>
-        <item name="android:actionMenuTextColor">@color/Thrall_MenuText_DayNight</item>
+        <item name="actionMenuTextAppearance">@style/MenuStyle_DayNight</item>
+        <item name="actionMenuTextColor">@color/MenuText_DayNight</item>
+        <item name="android:colorBackground">@android:color/darker_gray</item>
     </style>
 
     <style name="ActionButtonStyle" parent="Theme.AppCompat">
@@ -34,12 +29,20 @@
         <item name="android:background">@drawable/item_background</item>
     </style>
 
-    <style name="Thrall.MenuStyle" parent="TextAppearance.AppCompat.Small"/>
+    <style name="MenuStyle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">@dimen/MenuItem_TextSize</item>
+    </style>
 
-    <style name="Thrall.MenuStyle.Light" parent="Thrall.MenuStyle"/>
+    <style name="MenuStyle_Light" parent="MenuStyle">
+        <item name="android:textColor">@color/MenuText_Light</item>
+    </style>
 
-    <style name="Thrall.MenuStyle.Dark" parent="Thrall.MenuStyle"/>
+    <style name="MenuStyle_Dark" parent="MenuStyle">
+        <item name="android:textColor">@color/MenuText_Dark</item>
+    </style>
 
-    <style name="Thrall.MenuStyle.DayNight" parent="Thrall.MenuStyle"/>
+    <style name="MenuStyle_DayNight" parent="MenuStyle">
+        <item name="android:textColor">@color/MenuText_DayNight</item>
+    </style>
 
 </resources>

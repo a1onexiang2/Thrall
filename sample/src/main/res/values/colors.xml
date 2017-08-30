@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="MenuText_Light">@android:color/holo_red_light</color>
+    <color name="MenuText_Dark">@android:color/holo_green_light</color>
+    <color name="MenuText_DayNight">@android:color/holo_blue_light</color>
 </resources>

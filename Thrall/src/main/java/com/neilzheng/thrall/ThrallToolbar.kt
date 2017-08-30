@@ -1,16 +1,10 @@
 package com.neilzheng.thrall
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.TextViewCompat
-import android.support.v7.view.menu.ActionMenuItemView
-import android.support.v7.widget.ActionMenuView
 import android.support.v7.widget.AppCompatImageButton
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.Toolbar
@@ -21,7 +15,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import java.util.*
-import kotlin.concurrent.timerTask
 
 
 /**

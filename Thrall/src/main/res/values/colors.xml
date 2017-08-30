@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="Thrall_MenuText_Light">@android:color/black</color>
-    <color name="Thrall_MenuText_Dark">@android:color/black</color>
-    <color name="Thrall_MenuText_DayNight">@android:color/black</color>
+    <color name="MenuText_Light">@android:color/black</color>
+    <color name="MenuText_Dark">@android:color/white</color>
+    <color name="MenuText_DayNight">@android:color/darker_gray</color>
 
 </resources>
