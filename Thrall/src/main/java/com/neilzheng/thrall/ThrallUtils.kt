@@ -19,7 +19,9 @@ import android.support.v7.view.menu.ActionMenuItemView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 
 /**
  * Created by Neil Zheng on 2017/8/17.
@@ -84,10 +86,18 @@ class ThrallUtils {
         }
 
         internal fun addToRootView(rootView: ViewGroup, container: ViewGroup) {
-            val constructor = rootView::class.java.getConstructor(Context::class.java)
-            val containerDelegate = constructor.newInstance(rootView.context)
+            val containerDelegate: ViewGroup
             when (rootView) {
-                is LinearLayout -> (containerDelegate as LinearLayout).orientation = rootView.orientation
+                is LinearLayout -> {
+                    containerDelegate = newInstance(rootView.context, LinearLayout::class.java)
+                    containerDelegate.orientation = rootView.orientation
+                }
+                is RelativeLayout -> {
+                    containerDelegate = newInstance(rootView.context, RelativeLayout::class.java)
+                }
+                else -> {
+                    containerDelegate = newInstance(rootView.context, FrameLayout::class.java)
+                }
             }
             for (i in rootView.childCount - 1 downTo 0) {
                 val child = rootView.getChildAt(i)
@@ -100,6 +110,10 @@ class ThrallUtils {
             params.behavior = AppBarLayout.ScrollingViewBehavior()
             container.addView(containerDelegate, params)
             rootView.addView(container)
+        }
+
+        internal fun <T : ViewGroup> newInstance(context: Context, clazz: Class<T>): T {
+            return clazz.getConstructor(Context::class.java).newInstance(context)
         }
 
         internal fun getRootView(activity: Activity): ViewGroup {
