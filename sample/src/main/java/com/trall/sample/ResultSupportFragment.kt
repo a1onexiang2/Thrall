@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.activity_result.*
  */
 class ResultSupportFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_result, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.activity_result, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ class ResultSupportFragment : Fragment() {
 
     inner class TextHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal var text = itemView.findViewById(R.id.text) as TextView
+        internal var text = itemView.findViewById<TextView>(R.id.text)
 
     }
 }

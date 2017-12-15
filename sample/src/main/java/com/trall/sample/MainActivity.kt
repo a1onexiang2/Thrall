@@ -123,8 +123,8 @@ class MainActivity : AppCompatActivity() {
 
     inner class SettingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal var textInputEditText = itemView.findViewById(R.id.textInputEditText) as TextInputEditText
-        internal var textInputLayout = itemView.findViewById(R.id.textInputLayout) as TextInputLayout
+        internal var textInputEditText = itemView.findViewById<TextInputEditText>(R.id.textInputEditText)
+        internal var textInputLayout = itemView.findViewById<TextInputLayout>(R.id.textInputLayout)
 
     }
 }

@@ -42,7 +42,7 @@ class ResultFragment : Fragment() {
 
     inner class TextHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal var text = itemView.findViewById(R.id.text) as TextView
+        internal var text = itemView.findViewById<TextView>(R.id.text)
 
     }
 }

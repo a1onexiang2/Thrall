@@ -14,24 +14,19 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import java.util.*
-
 
 /**
- * Created by Neil Zheng on 2017/8/17.
- */
-class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr: Int)
+* Created by Neil Zheng on 2017/8/17.
+*/
+class ThrallToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     : Toolbar(context, attrs, defStyleAttr) {
 
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, null, 0)
 
-    private val container: FrameLayout = FrameLayout(getContext())
-    private val titleView: TextView = TextView(getContext())
-    private var timer: Timer? = null
-    private var timerTask: TimerTask? = null
-    private var looping = true
+    private val container by lazy { FrameLayout(getContext()) }
+    private val titleView by lazy { TextView(getContext()) }
     private lateinit var config: ThrallConfig
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -71,7 +66,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
     private fun updateNavigationView() {
         navigationIcon = ContextCompat.getDrawable(context, config.navigationIcon)
         val imageList = ThrallUtils.findAllView(this, AppCompatImageButton::class.java)
-        val navigationView = imageList.filter { it.drawable === navigationIcon }.first()
+        val navigationView = imageList.first { it.drawable === navigationIcon }
         val params = navigationView.layoutParams as MarginLayoutParams
         if (config.navigationSize[0] > 0) {
             navigationView.minimumWidth = config.navigationSize[0]
@@ -92,7 +87,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
     private fun updateLogoView() {
         logo = ContextCompat.getDrawable(context, config.logoIcon)
         val imageList = ThrallUtils.findAllView(this, AppCompatImageView::class.java)
-        val logoView = imageList.filter { it.drawable === logo }.first()
+        val logoView = imageList.first { it.drawable === logo }
         val params = logoView.layoutParams as MarginLayoutParams
         if (config.logoSize[0] > 0) {
             params.width = config.logoSize[0]
@@ -107,6 +102,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
         logoView.setPadding(paddingArr[0], paddingArr[1], paddingArr[2], paddingArr[3])
         logoView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         logoView.setOnClickListener(config.logoOnClickListener)
+        logoView.setBackgroundResource(R.drawable.item_background)
     }
 
     private fun updateCenterView() {
@@ -125,7 +121,7 @@ class ThrallToolbar(context: Context, var attrs: AttributeSet?, var defStyleAttr
             titleView.visibility = View.GONE
         } else {
             container.visibility = View.GONE
-            titleView.visibility == if (config.titleVisible) View.VISIBLE else View.GONE
+            titleView.visibility = if (config.titleVisible) View.VISIBLE else View.GONE
         }
     }
 }

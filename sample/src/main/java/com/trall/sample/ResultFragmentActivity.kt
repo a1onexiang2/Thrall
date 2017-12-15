@@ -26,15 +26,15 @@ class ResultFragmentActivity : AppCompatActivity() {
                 .setLogoIcon(R.mipmap.ic_launcher)
                 .setLogoVisible(true)
                 .setNavigationVisible(true)
-                .setLogoSize(intArrayOf(72,72))
+                .setLogoSize(intArrayOf(72, 72))
                 .setPaddingLeft(40)
                 .setPaddingRight(40)
 //                .setAsActionBar(true)
                 .addMenuResId(R.menu.main)
                 .addMenuResId(R.menu.fragment)
-                .setMenuOnItemClickListener(Toolbar.OnMenuItemClickListener {
+                .setMenuOnItemClickListener {
                     true
-                })
+                }
                 .setScrollBehaviorEnabled(true)
                 .bind(this)
     }

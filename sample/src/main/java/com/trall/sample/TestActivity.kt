@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_result.*
 import java.lang.reflect.Array.setBoolean
 import java.lang.reflect.AccessibleObject.setAccessible
 import android.view.LayoutInflater
+import android.widget.Toast
 
 
 class TestActivity : AppCompatActivity() {
@@ -25,13 +26,14 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
         initRecyclerView()
         Thrall.newConfig()
+                .setLogoIcon(R.mipmap.ic_launcher)
+                .setLogoVisible(true)
+                .setLogoOnClickListener {
+                    Toast.makeText(this@TestActivity, "123", Toast.LENGTH_SHORT).show()
+                }
+                .setTitle("123123")
                 .setTitleGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
                 .bind(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
     }
 
     private fun initRecyclerView() {
@@ -53,7 +55,7 @@ class TestActivity : AppCompatActivity() {
 
     inner class TextHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal var text = itemView.findViewById(R.id.text) as TextView
+        internal var text = itemView.findViewById<TextView>(R.id.text)
 
     }
 }

@@ -5,15 +5,15 @@ import android.content.Context
 import android.support.v4.app.Fragment as SupportFragment
 import android.support.annotation.*
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import java.io.Serializable
 
 /**
- * Created by Neil Zheng on 2017/8/16.
- */
+* Created by Neil Zheng on 2017/8/16.
+*/
 class ThrallConfig internal constructor() : Serializable {
 
     internal var height = UNSETTLED_INT
@@ -27,8 +27,8 @@ class ThrallConfig internal constructor() : Serializable {
     internal var elevation = UNSETTLED_FLOAT
     internal var shadowVisible = true
     internal var scrollBehaviorEnabled = false
-    internal var toolbarTheme = Theme.DARK()
-    internal var popupTheme = Theme.LIGHT()
+    internal var toolbarTheme = Theme.DARK
+    internal var popupTheme = Theme.LIGHT
     internal var titleAppearance = R.style.TextAppearance_AppCompat_Title
 
     internal var logoIcon = UNSETTLED_INT
@@ -36,7 +36,7 @@ class ThrallConfig internal constructor() : Serializable {
     internal var logoPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var logoVisible = false
-    internal var logoOnClickListener = View.OnClickListener {}
+    internal var logoOnClickListener: (View) -> Unit = {}
 
     internal var title = UNSETTLED_STRING
     internal var titleGravity = Gravity.CENTER
@@ -48,14 +48,14 @@ class ThrallConfig internal constructor() : Serializable {
     internal var navigationPadding = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var navigationMargin = intArrayOf(UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT, UNSETTLED_INT)
     internal var navigationVisible = false
-    internal var navigationOnClickListener = View.OnClickListener { view ->
+    internal var navigationOnClickListener: (View) -> Unit = { view ->
         ThrallUtils.getActivityFromView(view)?.finish()
     }
 
     internal var overflowIcon = UNSETTLED_INT
 
     internal var menuResIds = arrayListOf<Int>()
-    internal var menuOnItemClickListener = Toolbar.OnMenuItemClickListener { false }
+    internal var menuOnItemClickListener: (MenuItem) -> Boolean = { false }
 
     internal var customView: View? = null
     internal var customViewLayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -64,9 +64,15 @@ class ThrallConfig internal constructor() : Serializable {
     private var isSaved = false
 
     object Theme {
-        @JvmStatic @StyleRes fun LIGHT(): Int = R.style.Thrall_Light
-        @JvmStatic @StyleRes fun DARK(): Int = R.style.Thrall_Dark
-        @JvmStatic @StyleRes fun DAY_NIGHT(): Int = R.style.Thrall_DayNight
+        @JvmField
+        @StyleRes
+        val LIGHT: Int = R.style.Thrall_Light
+        @JvmField
+        @StyleRes
+        val DARK: Int = R.style.Thrall_Dark
+        @JvmField
+        @StyleRes
+        val DAY_NIGHT: Int = R.style.Thrall_DayNight
     }
 
     fun loadStyle(context: Context, @StyleRes resId: Int): ThrallConfig {
@@ -132,7 +138,7 @@ class ThrallConfig internal constructor() : Serializable {
         if (menuResId > 0) {
             try {
                 val menuResIdArray = context.resources.getIntArray(menuResId)
-                (0..menuResIdArray.size - 1)
+                (0 until menuResIdArray.size)
                         .map { menuResIdArray[it] }
                         .forEach { addMenuResId(it) }
             } catch (e: Exception) {
@@ -206,7 +212,10 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setElevation(@Px elevation: Float): ThrallConfig {
+    /**
+     * @param elevation Android sourcecode says "elevation" is a value in pixel though it's a Float type.
+     */
+    fun setElevation(elevation: Float): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             this.elevation = elevation
         }
@@ -234,14 +243,18 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setLogoOnClickListener(listener: View.OnClickListener): ThrallConfig {
+    fun setLogoOnClickListener(listener: (View) -> Unit): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             logoOnClickListener = listener
         }
         return this
     }
 
-    fun setLogoSize(size: IntArray): ThrallConfig {
+    /**
+     * @param size Size is an IntArray contains at least TWO Integers in pixels,
+     * and the first is width and the second is height.
+     */
+    fun setLogoSize(@Px size: IntArray): ThrallConfig {
         if (size.size < 2) {
             //TODO throw ThrallException
         }
@@ -251,7 +264,11 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setLogoPadding(padding: IntArray): ThrallConfig {
+    /**
+     * @param padding Padding is an IntArray contains at least FOUR Integers in pixels,
+     * and they are sorted as Left, Top, Right, Bottom.
+     */
+    fun setLogoPadding(@Px padding: IntArray): ThrallConfig {
         if (padding.size < 4) {
             //TODO throw ThrallException
         }
@@ -261,7 +278,11 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setLogoMargin(margin: IntArray): ThrallConfig {
+    /**
+     * @param margin Margin is an IntArray contains at least FOUR Integers in pixels,
+     * and they are sorted as Left, Top, Right, Bottom.
+     */
+    fun setLogoMargin(@Px margin: IntArray): ThrallConfig {
         if (margin.size < 4) {
             //TODO throw ThrallException
         }
@@ -313,6 +334,10 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
+    /**
+     * @param margin Margin is an IntArray contains at least FOUR Integers in pixels,
+     * and they are sorted as Left, Top, Right, Bottom.
+     */
     fun setTitleMargin(@Px margin: IntArray): ThrallConfig {
         if (margin.size < 4) {
             //TODO throw ThrallException
@@ -337,7 +362,11 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setNavigationSize(size: IntArray): ThrallConfig {
+    /**
+     * @param size Size is an IntArray contains at least TWO Integers in pixels,
+     * and the first is width and the second is height.
+     */
+    fun setNavigationSize(@Px size: IntArray): ThrallConfig {
         if (size.size < 2) {
             //TODO throw ThrallException
         }
@@ -347,7 +376,11 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setNavigationPadding(padding: IntArray): ThrallConfig {
+    /**
+     * @param padding Padding is an IntArray contains at least FOUR Integers in pixels,
+     * and they are sorted as Left, Top, Right, Bottom.
+     */
+    fun setNavigationPadding(@Px padding: IntArray): ThrallConfig {
         if (padding.size < 4) {
             //TODO throw ThrallException
         }
@@ -357,7 +390,11 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setNavigationMargin(margin: IntArray): ThrallConfig {
+    /**
+     * @param margin Margin is an IntArray contains at least FOUR Integers in pixels,
+     * and they are sorted as Left, Top, Right, Bottom.
+     */
+    fun setNavigationMargin(@Px margin: IntArray): ThrallConfig {
         if (margin.size < 4) {
             //TODO throw ThrallException
         }
@@ -367,7 +404,7 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setNavigationOnClickListener(listener: View.OnClickListener): ThrallConfig {
+    fun setNavigationOnClickListener(listener: (View) -> Unit): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             navigationOnClickListener = listener
         }
@@ -395,7 +432,7 @@ class ThrallConfig internal constructor() : Serializable {
         return this
     }
 
-    fun setMenuOnItemClickListener(listener: Toolbar.OnMenuItemClickListener): ThrallConfig {
+    fun setMenuOnItemClickListener(listener: (MenuItem) -> Boolean): ThrallConfig {
         if (!checkSavedDefaultLock()) {
             this.menuOnItemClickListener = listener
         }
@@ -435,9 +472,9 @@ class ThrallConfig internal constructor() : Serializable {
 
     internal object Checker {
 
-        private val UNSETTLED_INT = ThrallConfig.UNSETTLED_INT
-        private val UNSETTLED_FLOAT = ThrallConfig.UNSETTLED_FLOAT
-        private val UNSETTLED_STRING = ThrallConfig.UNSETTLED_STRING
+        private const val UNSETTLED_INT = ThrallConfig.UNSETTLED_INT
+        private const val UNSETTLED_FLOAT = ThrallConfig.UNSETTLED_FLOAT
+        private const val UNSETTLED_STRING = ThrallConfig.UNSETTLED_STRING
 
         fun check(config: ThrallConfig) {
             if (isUnsettled(config.height)) {
@@ -476,41 +513,31 @@ class ThrallConfig internal constructor() : Serializable {
         }
 
         private fun setArrayWithDefault(array: IntArray, default: Int) {
-            (0..array.size - 1)
+            (0 until array.size)
                     .filter { isUnsettled(array[it]) }
                     .forEach { array[it] = default }
         }
 
-        private fun isUnsettled(int: Int): Boolean {
-            return int == UNSETTLED_INT
-        }
+        private fun isUnsettled(int: Int): Boolean = int == UNSETTLED_INT
 
-        private fun isUnsettled(str: String): Boolean {
-            return str == UNSETTLED_STRING
-        }
+        private fun isUnsettled(str: String): Boolean = str == UNSETTLED_STRING
 
-        private fun isUnsettled(float: Float): Boolean {
-            return float == UNSETTLED_FLOAT
-        }
+        private fun isUnsettled(float: Float): Boolean = float == UNSETTLED_FLOAT
 
-        private fun isUnsettled(intArray: IntArray): Boolean {
-            return (0..intArray.size - 1).any { isUnsettled(intArray[it]) }
-        }
+        private fun isUnsettled(intArray: IntArray): Boolean = (0 until intArray.size).any { isUnsettled(intArray[it]) }
     }
 
     internal companion object {
 
-        internal val UNSETTLED_INT = -13
-        internal val UNSETTLED_FLOAT = -13f
-        internal val UNSETTLED_STRING = "unsettled"
+        internal const val UNSETTLED_INT = -13
+        internal const val UNSETTLED_FLOAT = -13f
+        internal const val UNSETTLED_STRING = "unsettled"
 
         private object Inner {
             val instance = ThrallConfig()
         }
 
-        @JvmStatic internal fun default(): ThrallConfig {
-            return Inner.instance
-        }
+        @JvmStatic internal fun default(): ThrallConfig = Inner.instance
     }
 
     internal fun cloneInstance(): ThrallConfig {
@@ -554,8 +581,6 @@ class ThrallConfig internal constructor() : Serializable {
         return result
     }
 
-    private fun checkSavedDefaultLock(): Boolean {
-        return isSaved && this === Inner.instance
-    }
+    private fun checkSavedDefaultLock(): Boolean = isSaved && this === Inner.instance
 
 }

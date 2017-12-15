@@ -18,8 +18,8 @@ class MyApp : Application() {
 
     private fun initThrall() {
         Thrall.defaultConfig()
-                .setToolbarTheme(ThrallConfig.Theme.DAY_NIGHT())
-                .setPopupTheme(ThrallConfig.Theme.LIGHT())
+                .setToolbarTheme(ThrallConfig.Theme.DAY_NIGHT)
+                .setPopupTheme(ThrallConfig.Theme.LIGHT)
                 .loadStyle(this, R.style.Toolbar)
                 .saveDefault()
     }

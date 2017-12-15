@@ -7,15 +7,10 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.support.annotation.Px
 import android.support.annotation.RequiresApi
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.TextViewCompat
-import android.support.v7.view.menu.ActionMenuItemView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +19,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 
 /**
- * Created by Neil Zheng on 2017/8/17.
- */
+* Created by Neil Zheng on 2017/8/17.
+*/
 class ThrallUtils {
 
     companion object {
@@ -42,7 +37,7 @@ class ThrallUtils {
                 return view as T
             }
             when (view) {
-                is ViewGroup -> (0..view.childCount - 1).forEach {
+                is ViewGroup -> (0 until view.childCount).forEach {
                     val result = findView(view.getChildAt(it), clazz)
                     if (null != result) {
                         return result
@@ -52,13 +47,13 @@ class ThrallUtils {
             return null
         }
 
-        internal fun <T : View> findAllView(view: View, clazz: Class<T>): ArrayList<T> {
+        internal fun <T : View> findAllView(view: View, clazz: Class<T>): MutableList<T> {
             val result = arrayListOf<T>()
             if (clazz.isInstance(view)) {
                 result.add(view as T)
             } else {
                 when (view) {
-                    is ViewGroup -> (0..view.childCount - 1).forEach {
+                    is ViewGroup -> (0 until view.childCount).forEach {
                         result.addAll(findAllView(view.getChildAt(it), clazz))
                     }
                 }
@@ -66,16 +61,14 @@ class ThrallUtils {
             return result
         }
 
-        internal fun <T : View> hasView(view: View, clazz: Class<T>): Boolean {
-            return findView(view, clazz) != null
-        }
+        internal fun <T : View> hasView(view: View, clazz: Class<T>): Boolean = findView(view, clazz) != null
 
         internal fun printView(view: View) {
             when (view) {
                 is ViewGroup -> {
                     Log.e("printView",
                             "find ViewGroup : ${view.javaClass.name} @ ${view.id} with ${view.childCount} children")
-                    (0..view.childCount - 1).forEach {
+                    (0 until view.childCount).forEach {
                         printView(view.getChildAt(it))
                     }
                 }
@@ -112,13 +105,10 @@ class ThrallUtils {
             rootView.addView(container)
         }
 
-        internal fun <T : ViewGroup> newInstance(context: Context, clazz: Class<T>): T {
-            return clazz.getConstructor(Context::class.java).newInstance(context)
-        }
+        internal fun <T : ViewGroup> newInstance(context: Context, clazz: Class<T>): T =
+                clazz.getConstructor(Context::class.java).newInstance(context)
 
-        internal fun getRootView(activity: Activity): ViewGroup {
-            return activity.findViewById(android.R.id.content) as ViewGroup
-        }
+        internal fun getRootView(activity: Activity): ViewGroup = activity.findViewById(android.R.id.content)
 
         internal fun getActivityFromView(view: View): Activity? {
             var context = view.context
@@ -131,21 +121,13 @@ class ThrallUtils {
             return null
         }
 
-        internal fun dp2pxf(dp: Int): Float {
-            return dp * Resources.getSystem().displayMetrics.density
-        }
+        internal fun dp2pxf(dp: Int): Float = dp * Resources.getSystem().displayMetrics.density
 
-        @Px internal fun dp2px(dp: Int): Int {
-            return dp2pxf(dp).toInt()
-        }
+        @Px internal fun dp2px(dp: Int): Int = dp2pxf(dp).toInt()
 
-        internal fun sp2pxf(sp: Int): Float {
-            return sp * Resources.getSystem().displayMetrics.scaledDensity + 0.5f
-        }
+        internal fun sp2pxf(sp: Int): Float = sp * Resources.getSystem().displayMetrics.scaledDensity + 0.5f
 
-        @Px internal fun sp2px(sp: Int): Int {
-            return sp2pxf(sp).toInt()
-        }
+        @Px internal fun sp2px(sp: Int): Int = sp2pxf(sp).toInt()
 
     }
 

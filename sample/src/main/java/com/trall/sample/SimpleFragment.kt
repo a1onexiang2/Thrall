@@ -12,8 +12,8 @@ import com.neilzheng.thrall.Thrall
  */
 class SimpleFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_simple, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_simple, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -23,8 +23,9 @@ class SimpleFragment : Fragment() {
                 .setTitleGravity(Gravity.BOTTOM or Gravity.LEFT)
                 .setLogoVisible(true)
                 .addMenuResId(R.menu.main)
-                .setMenuOnItemClickListener(Toolbar.OnMenuItemClickListener {
-                    true })
+                .setMenuOnItemClickListener {
+                    true
+                }
                 .setIsInViewPager(true)
                 .setLogoIcon(R.mipmap.ic_launcher_round)
                 .setShadowVisible(true)
